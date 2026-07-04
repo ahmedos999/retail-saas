@@ -1,5 +1,5 @@
 import { CueList } from '#/components/CueList'
-import { Button } from '@retail/ui'
+import { Button, Search } from '@retail/ui'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
@@ -26,6 +26,10 @@ function RouteComponent() {
 
       <div className="mt-10 w-full">
         <CueList />
+      </div>
+
+      <div className="mt-6">
+        <Search placeholder="Search products..." />
       </div>
     </div>
   )
