@@ -87,8 +87,8 @@ export const Pagination = ({
   const pages = getPages();
 
   return (
-    <div className="flex items-center justify-between px-2 py-3 text-sm text-gray-600">
-      <span>
+    <div className="flex items-center justify-between px-2 py-3 text-sm text-gray-600 mt-4">
+      <span className=" text-gray-500">
         Page {currentPage} of {totalPages} &mdash; {totalItems} items
       </span>
       <div className="flex items-center gap-1">
