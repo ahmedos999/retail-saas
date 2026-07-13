@@ -5,5 +5,7 @@ export { Search } from "./form/search";
 export { DropDown } from "./form/dropdown";
 export { Table, TableRow, TableCell, Pagination } from "./table";
 export { ProductModel } from "./model/ProductModel";
+export { CategoryList } from "./categoryList";
+export { ProductItem } from "./product/productItem";
 export type { NavLink } from "./sideBar";
 export type { TableColumn, PaginationProps } from "./table";

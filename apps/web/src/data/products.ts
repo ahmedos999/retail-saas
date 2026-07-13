@@ -57,3 +57,38 @@ export const products = [
     status: 'In Stock',
   },
 ]
+
+export const categories = [
+  { id: 1, name: 'Shoes' },
+  { id: 2, name: 'Clothing' },
+  { id: 3, name: 'Accessories' },
+  { id: 4, name: 'Electronics' },
+  { id: 5, name: 'Home & Kitchen' },
+]
+
+export const items = [
+  {
+    name: 'Product 1',
+    price: 19.99,
+    imageUrl: '/product1.png',
+    stock: 10,
+  },
+  {
+    name: 'Product 2',
+    price: 29.99,
+    imageUrl: '/product1.png',
+    stock: 3,
+  },
+  {
+    name: 'Product 3',
+    price: 39.99,
+    imageUrl: '/product1.png',
+    stock: 0,
+  },
+  {
+    name: 'Product 4',
+    price: 49.99,
+    imageUrl: '/product1.png',
+    stock: 5,
+  },
+]

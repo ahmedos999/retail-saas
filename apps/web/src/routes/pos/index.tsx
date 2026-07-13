@@ -1,9 +1,30 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Button, CategoryList } from '@retail/ui'
+import { ProductList } from '#/components/ProductList'
+import { categories, items } from '#/data/products'
 
 export const Route = createFileRoute('/pos/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/pos/"!</div>
+  return (
+    <div className="p-6 flex">
+      <div className="w-8/12">
+        <h1 className="text-xl font-bold">All Categories</h1>
+        <div className="mt-4">
+          <CategoryList categories={categories} />
+        </div>
+
+        <div className="mt-8">
+          <ProductList products={items} />
+        </div>
+      </div>
+      <div className="w-4/12 ml-12 box-shadow rounded-md px-4 py-2">
+        <h2 className="border-b border-gray-300 py-2 font-bold">
+          Current Sale
+        </h2>
+      </div>
+    </div>
+  )
 }

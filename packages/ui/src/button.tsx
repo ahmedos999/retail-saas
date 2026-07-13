@@ -7,8 +7,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:opacity-90 border border-white",
-  secondary: "bg-secondary text-white hover:opacity-90",
+  primary: "bg-secondary text-white hover:opacity-90",
+  secondary: "bg-white text-secondary border border-secondary hover:opacity-90",
 };
 
 export function Button({
