@@ -92,3 +92,19 @@ export const items = [
     stock: 5,
   },
 ]
+export const CartItems = [
+  {
+    img: '/product1.png',
+    name: 'Product 1',
+    description: 'Description for Product 1',
+    price: 10.99,
+    quantity: 2,
+  },
+  {
+    img: '/product1.png',
+    name: 'Product 2',
+    description: 'Description for Product 2',
+    price: 15.49,
+    quantity: 1,
+  },
+]

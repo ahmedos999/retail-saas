@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Button, CategoryList } from '@retail/ui'
+import { CategoryList } from '@retail/ui'
 import { ProductList } from '#/components/ProductList'
-import { categories, items } from '#/data/products'
+import { CartItems, categories, items } from '#/data/products'
+import { Cart } from '#/components/Cart'
 
 export const Route = createFileRoute('/pos/')({
   component: RouteComponent,
@@ -24,6 +25,9 @@ function RouteComponent() {
         <h2 className="border-b border-gray-300 py-2 font-bold">
           Current Sale
         </h2>
+        <div className="mt-4">
+          <Cart items={CartItems} />
+        </div>
       </div>
     </div>
   )

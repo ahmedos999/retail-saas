@@ -7,5 +7,6 @@ export { Table, TableRow, TableCell, Pagination } from "./table";
 export { ProductModel } from "./model/ProductModel";
 export { CategoryList } from "./categoryList";
 export { ProductItem } from "./product/productItem";
+export { CartItem } from "./product/cartItem";
 export type { NavLink } from "./sideBar";
 export type { TableColumn, PaginationProps } from "./table";
