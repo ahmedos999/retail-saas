@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { CategoryList } from '@retail/ui'
+import { CategoryList, Checkout } from '@retail/ui'
 import { ProductList } from '#/components/ProductList'
 import { CartItems, categories, items } from '#/data/products'
 import { Cart } from '#/components/Cart'
@@ -27,6 +27,15 @@ function RouteComponent() {
         </h2>
         <div className="mt-4">
           <Cart items={CartItems} />
+        </div>
+        <div className="mt-4">
+          <Checkout
+            subtotal={100}
+            discount={10}
+            taxRate={0.05}
+            ClearCart={() => console.log('Clear Cart')}
+            Checkout={() => console.log('Checkout')}
+          />
         </div>
       </div>
     </div>

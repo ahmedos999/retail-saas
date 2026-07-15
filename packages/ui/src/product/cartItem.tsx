@@ -25,7 +25,7 @@ export const CartItem = ({
       {/* quantity */}
       <div className="flex flex-col gap-2 justify-between">
         <h4 className="font-bold text-sm">{name}</h4>
-        <p className="text-gray-400 text-sm">{description}</p>
+        <p className="text-gray-400 text-xs">{description}</p>
         <div className="flex items-center gap-2 border border-gray-300 rounded-md  w-fit">
           <button
             className="border rounded-md p-1 border-gray-500"
