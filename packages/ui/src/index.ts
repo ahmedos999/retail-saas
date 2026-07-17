@@ -9,5 +9,6 @@ export { CategoryList } from "./categoryList";
 export { ProductItem } from "./product/productItem";
 export { CartItem } from "./product/cartItem";
 export { Checkout } from "./product/checkout";
+export { SaleInfoCard } from "./product/saleInfoCard";
 export type { NavLink } from "./sideBar";
 export type { TableColumn, PaginationProps } from "./table";

@@ -1,3 +1,5 @@
+import { Trash, Receipt } from "lucide-react";
+
 interface CheckoutProps {
   subtotal: number;
   discount: number;
@@ -48,14 +50,16 @@ export const Checkout = ({
       <div className="flex gap-2 mt-4">
         <button
           onClick={ClearCart}
-          className="border  rounded-md  px-4 py-2 flex-1 bg-secondary-light text-secondary border-secondary"
+          className="border  rounded-md  px-4 py-2 flex-1 bg-secondary-light text-secondary border-secondary flex items-center gap-2 justify-center"
         >
+          <Trash size={18} />
           Clear Cart
         </button>
         <button
           onClick={Checkout}
-          className=" rounded-md text-white px-4 py-2 flex-1 bg-secondary"
+          className=" rounded-md text-white px-4 py-2 flex-1 bg-secondary flex items-center gap-2 justify-center"
         >
+          <Receipt size={18} />
           Checkout
         </button>
       </div>

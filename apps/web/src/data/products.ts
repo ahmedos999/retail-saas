@@ -91,6 +91,30 @@ export const items = [
     imageUrl: '/product1.png',
     stock: 5,
   },
+  {
+    name: 'Product 1',
+    price: 19.99,
+    imageUrl: '/product1.png',
+    stock: 10,
+  },
+  {
+    name: 'Product 2',
+    price: 29.99,
+    imageUrl: '/product1.png',
+    stock: 3,
+  },
+  {
+    name: 'Product 3',
+    price: 39.99,
+    imageUrl: '/product1.png',
+    stock: 0,
+  },
+  {
+    name: 'Product 4',
+    price: 49.99,
+    imageUrl: '/product1.png',
+    stock: 5,
+  },
 ]
 export const CartItems = [
   {
@@ -104,6 +128,13 @@ export const CartItems = [
     img: '/product1.png',
     name: 'Product 2',
     description: 'Description for Product 2',
+    price: 15.49,
+    quantity: 1,
+  },
+  {
+    img: '/product1.png',
+    name: 'Product 3',
+    description: 'Description for Product 3',
     price: 15.49,
     quantity: 1,
   },
