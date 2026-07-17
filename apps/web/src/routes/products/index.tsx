@@ -1,4 +1,5 @@
 import { CueList } from '#/components/CueList'
+import { productCueItems } from '#/data/cueItems'
 import { products, productColumns } from '#/data/products'
 import {
   Button,
@@ -39,7 +40,7 @@ function RouteComponent() {
         </div>
 
         <div className="mt-10 w-full">
-          <CueList />
+          <CueList items={productCueItems} />
         </div>
 
         <div className="mt-6 flex gap-4">
