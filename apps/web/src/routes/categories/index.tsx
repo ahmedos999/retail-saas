@@ -3,7 +3,8 @@ import { Button, DropDown, Search } from '@retail/ui'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { CueList } from '#/components/CueList'
-import { categoryCueItems } from '#/data/cueItems'
+import { CategoryCardList } from '#/components/CategoryCardList'
+import { categoryCueItems, categoryCardItems } from '#/data/cueItems'
 
 export const Route = createFileRoute('/categories/')({
   component: RouteComponent,
@@ -35,6 +36,10 @@ function RouteComponent() {
           options={['Active', 'Inactive', 'Pending']}
           placeholder="All Status"
         />
+      </div>
+
+      <div className="mt-4 ">
+        <CategoryCardList categories={categoryCardItems} />
       </div>
     </div>
   )

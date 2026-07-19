@@ -1,5 +1,17 @@
-import { Box, Tag, DollarSign } from 'lucide-react'
+import {
+  Box,
+  Tag,
+  DollarSign,
+  Cpu,
+  Shirt,
+  UtensilsCrossed,
+  Dumbbell,
+  BookOpen,
+  Sparkles,
+  Baby,
+} from 'lucide-react'
 import type { CueItem } from '#/components/CueList'
+import type { CategoryCardItem } from '#/components/CategoryCardList'
 
 export const productCueItems: CueItem[] = [
   {
@@ -60,5 +72,71 @@ export const categoryCueItems: CueItem[] = [
     percentage: '1.8%',
     icon: <DollarSign size={24} className="text-yellow-800" />,
     bgColor: 'bg-yellow-200',
+  },
+]
+
+export const categoryCardItems: CategoryCardItem[] = [
+  {
+    title: 'Electronics',
+    description: 'Gadgets and devices',
+    numberOfProducts: 120,
+    revenue: '$50,000',
+    lowStock: 5,
+    bgColor: 'bg-blue-100',
+    icon: <Cpu size={32} className="text-blue-700" />,
+  },
+  {
+    title: 'Clothing',
+    description: 'Apparel and accessories',
+    numberOfProducts: 85,
+    revenue: '$32,000',
+    lowStock: 12,
+    bgColor: 'bg-pink-100',
+    icon: <Shirt size={32} className="text-pink-700" />,
+  },
+  {
+    title: 'Home & Kitchen',
+    description: 'Furniture and appliances',
+    numberOfProducts: 60,
+    revenue: '$21,500',
+    lowStock: 3,
+    bgColor: 'bg-orange-100',
+    icon: <UtensilsCrossed size={32} className="text-orange-700" />,
+  },
+  {
+    title: 'Sports & Outdoors',
+    description: 'Fitness and outdoor gear',
+    numberOfProducts: 45,
+    revenue: '$18,200',
+    lowStock: 8,
+    bgColor: 'bg-green-100',
+    icon: <Dumbbell size={32} className="text-green-700" />,
+  },
+  {
+    title: 'Books & Stationery',
+    description: 'Books, pens and supplies',
+    numberOfProducts: 200,
+    revenue: '$9,800',
+    lowStock: 20,
+    bgColor: 'bg-yellow-100',
+    icon: <BookOpen size={32} className="text-yellow-700" />,
+  },
+  {
+    title: 'Beauty & Care',
+    description: 'Skincare and cosmetics',
+    numberOfProducts: 95,
+    revenue: '$27,600',
+    lowStock: 7,
+    bgColor: 'bg-purple-100',
+    icon: <Sparkles size={32} className="text-purple-700" />,
+  },
+  {
+    title: 'Baby & Kids',
+    description: 'Toys, clothing and essentials',
+    numberOfProducts: 70,
+    revenue: '$15,400',
+    lowStock: 4,
+    bgColor: 'bg-teal-100',
+    icon: <Baby size={32} className="text-teal-700" />,
   },
 ]
