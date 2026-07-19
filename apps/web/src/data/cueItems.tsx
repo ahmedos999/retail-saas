@@ -9,9 +9,14 @@ import {
   BookOpen,
   Sparkles,
   Baby,
+  ShoppingCart,
+  TrendingUp,
+  Users,
+  PackageCheck,
 } from 'lucide-react'
 import type { CueItem } from '#/components/CueList'
 import type { CategoryCardItem } from '#/components/CategoryCardList'
+import type { ListViewItem } from '@retail/ui'
 
 export const productCueItems: CueItem[] = [
   {
@@ -138,5 +143,74 @@ export const categoryCardItems: CategoryCardItem[] = [
     lowStock: 4,
     bgColor: 'bg-teal-100',
     icon: <Baby size={32} className="text-teal-700" />,
+  },
+]
+
+export const dashboardListItems: ListViewItem[] = [
+  {
+    product: 'Air Max 90',
+    image:
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&q=80',
+    sold: 284,
+    revenue: '$36,920',
+  },
+  {
+    product: 'Slim Fit T-Shirt',
+    image:
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&q=80',
+    sold: 193,
+    revenue: '$9,650',
+  },
+  {
+    product: 'Wireless Headphones',
+    image:
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80',
+    sold: 147,
+    revenue: '$29,400',
+  },
+  {
+    product: 'Running Shorts',
+    image:
+      'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=80&q=80',
+    sold: 112,
+    revenue: '$5,600',
+  },
+  {
+    product: 'Leather Wallet',
+    image:
+      'https://images.unsplash.com/photo-1627123424574-724758594e93?w=80&q=80',
+    sold: 98,
+    revenue: '$7,840',
+  },
+]
+
+export const dashboardCueItems: CueItem[] = [
+  {
+    title: 'Total Revenue',
+    value: '$84,320',
+    percentage: '8.4%',
+    icon: <TrendingUp size={24} className="text-emerald-800" />,
+    bgColor: 'bg-emerald-200',
+  },
+  {
+    title: 'Total Orders',
+    value: '3,210',
+    percentage: '5.7%',
+    icon: <ShoppingCart size={24} className="text-blue-800" />,
+    bgColor: 'bg-blue-200',
+  },
+  {
+    title: 'Total Customers',
+    value: '1,540',
+    percentage: '3.2%',
+    icon: <Users size={24} className="text-violet-800" />,
+    bgColor: 'bg-violet-200',
+  },
+  {
+    title: 'Orders Fulfilled',
+    value: '2,894',
+    percentage: '6.1%',
+    icon: <PackageCheck size={24} className="text-orange-800" />,
+    bgColor: 'bg-orange-200',
   },
 ]
