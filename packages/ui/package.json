@@ -12,7 +12,8 @@
     "@tanstack/react-router": ">=1.0.0",
     "lucide-react": ">=0.400.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "recharts": ">=2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

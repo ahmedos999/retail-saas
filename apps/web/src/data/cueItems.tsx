@@ -16,7 +16,7 @@ import {
 } from 'lucide-react'
 import type { CueItem } from '#/components/CueList'
 import type { CategoryCardItem } from '#/components/CategoryCardList'
-import type { ListViewItem } from '@retail/ui'
+import type { ListViewItem, SalesDataPoint } from '@retail/ui'
 
 export const productCueItems: CueItem[] = [
   {
@@ -211,6 +211,20 @@ export const dashboardCueItems: CueItem[] = [
     value: '2,894',
     percentage: '6.1%',
     icon: <PackageCheck size={24} className="text-orange-800" />,
-    bgColor: 'bg-orange-200',
+    bgColor: 'bg-orange-800',
   },
+]
+
+export const salesChartData: SalesDataPoint[] = [
+  { date: 'Jul 1', sales: 4200 },
+  { date: 'Jul 3', sales: 3800 },
+  { date: 'Jul 5', sales: 5100 },
+  { date: 'Jul 7', sales: 4700 },
+  { date: 'Jul 9', sales: 6300 },
+  { date: 'Jul 11', sales: 5800 },
+  { date: 'Jul 13', sales: 7200 },
+  { date: 'Jul 15', sales: 6900 },
+  { date: 'Jul 17', sales: 8400 },
+  { date: 'Jul 19', sales: 7600 },
+  { date: 'Jul 20', sales: 9100 },
 ]

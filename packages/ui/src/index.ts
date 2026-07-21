@@ -8,6 +8,8 @@ export { ProductModel } from "./model/ProductModel";
 export { CategoryModel } from "./model/categoryModel";
 export { default as ListView } from "./dashboard/ListView";
 export type { ListViewItem } from "./dashboard/ListView";
+export { SalesChart } from "./dashboard/SalesChart";
+export type { SalesDataPoint } from "./dashboard/SalesChart";
 export { CategoryList } from "./category/categoryList";
 export { ProductItem } from "./product/productItem";
 export { CartItem } from "./product/cartItem";

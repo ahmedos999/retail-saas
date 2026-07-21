@@ -1,6 +1,10 @@
 import { CueList } from '#/components/CueList'
-import { dashboardCueItems, dashboardListItems } from '#/data/cueItems'
-import { DropDown, ListView } from '@retail/ui'
+import {
+  dashboardCueItems,
+  dashboardListItems,
+  salesChartData,
+} from '#/data/cueItems'
+import { DropDown, ListView, SalesChart } from '@retail/ui'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/')({
@@ -25,7 +29,9 @@ function RouteComponent() {
         <CueList items={dashboardCueItems} />
       </div>
 
-      <div className="mt-6 ">
+      <div className="mt-6 grid grid-cols-2 gap-4">
+        <SalesChart data={salesChartData} title="Sales Over Time" />
+
         <ListView title="Top Selling Products" items={dashboardListItems} />
       </div>
     </div>
