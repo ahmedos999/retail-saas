@@ -35,8 +35,15 @@ export const SideBar = ({ links }: SideBarProps) => {
           })}
         </ul>
       </div>
-      <p className="text-white">Grow your business</p>
-      <p className="text-white">Ahmed Osman</p>
+      <div className="flex items-center gap-3 text-white">
+        <div className="w-9 aspect-square rounded-full flex justify-center items-center bg-gray-500">
+          AO
+        </div>
+        <div>
+          <h4>Ahmed Osman</h4>
+          <p className="text-sm text-gray-300">Admin</p>
+        </div>
+      </div>
     </div>
   );
 };

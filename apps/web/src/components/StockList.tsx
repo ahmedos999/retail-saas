@@ -1,24 +1,17 @@
-import { Table, TableRow, TableCell } from "../table";
+import { Table, TableRow, TableCell } from '@retail/ui'
 
-export interface ListViewItem {
-  product: string;
-  image: string;
-  sold: number;
-  revenue: string;
+export interface StockListItem {
+  product: string
+  image: string
+  stock: number
 }
 
-interface ListViewProps {
-  title: string;
-  items: ListViewItem[];
+interface StockListProps {
+  title: string
+  items: StockListItem[]
 }
 
-const columns = [
-  { key: "product", header: "Product" },
-  { key: "sold", header: "Sold" },
-  { key: "revenue", header: "Revenue" },
-];
-
-const ListView = ({ title, items }: ListViewProps) => {
+const StockList = ({ title, items }: StockListProps) => {
   return (
     <div className="p-4 box-shadow rounded-md bg-white">
       <div className="flex justify-between border-b border-gray-300 pb-4 mb-4">
@@ -27,8 +20,8 @@ const ListView = ({ title, items }: ListViewProps) => {
           View all
         </button>
       </div>
-      <Table columns={columns}>
-        {items.map((item, index) => (
+      <Table columns={[]}>
+        {items.map((item) => (
           <TableRow key={item.product}>
             <TableCell>
               <div className="flex items-center gap-3">
@@ -40,17 +33,14 @@ const ListView = ({ title, items }: ListViewProps) => {
                 <span>{item.product}</span>
               </div>
             </TableCell>
-            <TableCell className={`${index === 0 ? "font-bold" : ""}`}>
-              {item.sold}
-            </TableCell>
-            <TableCell className={`${index === 0 ? "font-bold" : ""}`}>
-              {item.revenue}
+            <TableCell className="font-bold text-secondary">
+              {item.stock} left
             </TableCell>
           </TableRow>
         ))}
       </Table>
     </div>
-  );
-};
+  )
+}
 
-export default ListView;
+export default StockList
