@@ -13,9 +13,13 @@ import {
   TrendingUp,
   Users,
   PackageCheck,
+  Clock,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react'
 import type { CueItem } from '#/components/CueList'
 import type { CategoryCardItem } from '#/components/CategoryCardList'
+import type { Order } from '#/util/types'
 import type { ListViewItem, SalesDataPoint } from '@retail/ui'
 
 export const productCueItems: CueItem[] = [
@@ -211,7 +215,121 @@ export const dashboardCueItems: CueItem[] = [
     value: '2,894',
     percentage: '6.1%',
     icon: <PackageCheck size={24} className="text-orange-800" />,
-    bgColor: 'bg-orange-800',
+    bgColor: 'bg-orange-200',
+  },
+]
+
+export const ordersCueItems: CueItem[] = [
+  {
+    title: 'Total Orders',
+    value: '3,210',
+    percentage: '5.7%',
+    icon: <ShoppingCart size={24} className="text-blue-800" />,
+    bgColor: 'bg-blue-200',
+  },
+  {
+    title: 'Pending',
+    value: '148',
+    percentage: '2.3%',
+    icon: <Clock size={24} className="text-yellow-800" />,
+    bgColor: 'bg-yellow-200',
+  },
+  {
+    title: 'Completed',
+    value: '2,894',
+    percentage: '6.1%',
+    icon: <CheckCircle size={24} className="text-green-800" />,
+    bgColor: 'bg-green-200',
+  },
+  {
+    title: 'Cancelled',
+    value: '168',
+    percentage: '1.4%',
+    icon: <XCircle size={24} className="text-red-800" />,
+    bgColor: 'bg-red-200',
+  },
+]
+
+export const ordersData: Order[] = [
+  {
+    orderNumber: '#ORD-001',
+    date: 'Jul 20, 2026',
+    time: '09:14 AM',
+    customer: 'John Doe',
+    items: 3,
+    paymentMethod: 'Credit Card',
+    total: '$124.99',
+    status: 'Completed',
+  },
+  {
+    orderNumber: '#ORD-002',
+    date: 'Jul 20, 2026',
+    time: '10:32 AM',
+    customer: 'Jane Smith',
+    items: 1,
+    paymentMethod: 'PayPal',
+    total: '$49.00',
+    status: 'Pending',
+  },
+  {
+    orderNumber: '#ORD-003',
+    date: 'Jul 19, 2026',
+    time: '03:05 PM',
+    customer: 'Alice Johnson',
+    items: 5,
+    paymentMethod: 'Cash',
+    total: '$310.50',
+    status: 'Processing',
+  },
+  {
+    orderNumber: '#ORD-004',
+    date: 'Jul 19, 2026',
+    time: '04:48 PM',
+    customer: 'Bob Martinez',
+    items: 2,
+    paymentMethod: 'Bank Transfer',
+    total: '$88.00',
+    status: 'Cancelled',
+  },
+  {
+    orderNumber: '#ORD-005',
+    date: 'Jul 18, 2026',
+    time: '11:20 AM',
+    customer: 'Carol White',
+    items: 4,
+    paymentMethod: 'Credit Card',
+    total: '$215.75',
+    status: 'Completed',
+  },
+  {
+    orderNumber: '#ORD-006',
+    date: 'Jul 18, 2026',
+    time: '01:55 PM',
+    customer: 'David Lee',
+    items: 2,
+    paymentMethod: 'PayPal',
+    total: '$96.40',
+    status: 'Completed',
+  },
+  {
+    orderNumber: '#ORD-007',
+    date: 'Jul 17, 2026',
+    time: '08:30 AM',
+    customer: 'Eva Brown',
+    items: 6,
+    paymentMethod: 'Credit Card',
+    total: '$472.00',
+    status: 'Processing',
+  },
+  {
+    orderNumber: '#ORD-008',
+    date: 'Jul 17, 2026',
+    time: '02:10 PM',
+    customer: 'Frank Wilson',
+    items: 1,
+    paymentMethod: 'Cash',
+    total: '$34.99',
+    status: 'Pending',
   },
 ]
 
@@ -227,4 +345,46 @@ export const salesChartData: SalesDataPoint[] = [
   { date: 'Jul 17', sales: 8400 },
   { date: 'Jul 19', sales: 7600 },
   { date: 'Jul 20', sales: 9100 },
+]
+
+export const recentOrdersData = [
+  {
+    OrderNumber: 'ORD12345',
+    Customer: 'John Doe',
+    status: 'Pending' as const,
+    price: 100,
+  },
+  {
+    OrderNumber: 'ORD12346',
+    Customer: 'Jane Smith',
+    status: 'Completed' as const,
+    price: 150,
+  },
+  {
+    OrderNumber: 'ORD12347',
+    Customer: 'Alice Johnson',
+    status: 'Cancelled' as const,
+    price: 200,
+  },
+]
+
+export const lowStockData = [
+  {
+    product: 'Air Max 90',
+    image:
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&q=80',
+    stock: 3,
+  },
+  {
+    product: 'Slim Fit T-Shirt',
+    image:
+      'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=80&q=80',
+    stock: 6,
+  },
+  {
+    product: 'Wireless Headphones',
+    image:
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80',
+    stock: 2,
+  },
 ]

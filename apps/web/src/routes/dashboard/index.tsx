@@ -4,6 +4,8 @@ import StockList from '#/components/StockList'
 import {
   dashboardCueItems,
   dashboardListItems,
+  lowStockData,
+  recentOrdersData,
   salesChartData,
 } from '#/data/cueItems'
 import { DropDown, ListView, SalesChart } from '@retail/ui'
@@ -38,52 +40,8 @@ function RouteComponent() {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <OrderList
-          title="Recent Orders"
-          items={[
-            {
-              OrderNumber: 'ORD12345',
-              Customer: 'John Doe',
-              status: 'Pending',
-              price: 100,
-            },
-            {
-              OrderNumber: 'ORD12346',
-              Customer: 'Jane Smith',
-              status: 'Completed',
-              price: 150,
-            },
-            {
-              OrderNumber: 'ORD12347',
-              Customer: 'Alice Johnson',
-              status: 'Cancelled',
-              price: 200,
-            },
-          ]}
-        />
-        <StockList
-          title="Low Stock Products"
-          items={[
-            {
-              product: 'Air Max 90',
-              image:
-                'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&q=80',
-              stock: 3,
-            },
-            {
-              product: 'Slim Fit T-Shirt',
-              image:
-                'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=80&q=80',
-              stock: 6,
-            },
-            {
-              product: 'Wireless Headphones',
-              image:
-                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80',
-              stock: 2,
-            },
-          ]}
-        />
+        <OrderList title="Recent Orders" items={recentOrdersData} />
+        <StockList title="Low Stock Products" items={lowStockData} />
       </div>
     </div>
   )

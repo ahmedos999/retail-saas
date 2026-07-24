@@ -1,10 +1,11 @@
 import { Table, TableRow, TableCell } from '@retail/ui'
-import { Receipt } from 'lucide-react'
+import { ReceiptText } from 'lucide-react'
+import { getStatusColor } from '#/util/getStatusColot'
 
 interface OrderListItem {
   OrderNumber: string
   Customer: string
-  status: 'Pending' | 'Completed' | 'Cancelled'
+  status: 'Pending' | 'Processing' | 'Completed' | 'Cancelled'
   price: number
 }
 
@@ -27,25 +28,19 @@ const OrderList = ({ title, items }: OrderListProps) => {
           <TableRow key={item.OrderNumber}>
             <TableCell>
               <div className="flex items-center gap-3">
-                <div className="flex justify-center items-center w-9 h-9 bg-red-300 rounded-md">
-                  <Receipt size={18} className="text-red-600" />
+                <div className="flex justify-center items-center w-8 h-8 bg-red-300 rounded-md">
+                  <ReceiptText size={16} className="text-red-600" />
                 </div>
                 <span className="font-bold">{item.OrderNumber}</span>
               </div>
             </TableCell>
             <TableCell>{item.Customer}</TableCell>
             <TableCell>
-              <div
-                className={`p-1 rounded-md w-fit text-sm ${
-                  item.status === 'Pending'
-                    ? 'text-yellow-600 bg-amber-200'
-                    : item.status === 'Completed'
-                      ? 'text-green-600 bg-green-200'
-                      : 'text-red-600 bg-red-200'
-                }`}
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}
               >
                 {item.status}
-              </div>
+              </span>
             </TableCell>
             <TableCell>{item.price}</TableCell>
           </TableRow>
