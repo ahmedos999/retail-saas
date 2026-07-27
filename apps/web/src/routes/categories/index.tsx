@@ -21,7 +21,7 @@ function RouteComponent() {
             <h2 className="text-2xl font-bold mb-4">Categories</h2>
             <p>Organize your product categories here.</p>
           </div>
-          <Button variant="secondary" onClick={() => setIsOpen(true)}>
+          <Button variant="primary" onClick={() => setIsOpen(true)}>
             <div className="flex items-center">
               <Plus className="mr-2" /> <div>Add Category</div>
             </div>

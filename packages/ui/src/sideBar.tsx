@@ -4,7 +4,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 export interface NavLink {
   label: string;
   icon: LucideIcon;
-  link: "dashboard" | "products" | "categories" | "pos" | "orders";
+  link: "dashboard" | "products" | "categories" | "pos" | "orders" | "settings";
 }
 
 interface SideBarProps {

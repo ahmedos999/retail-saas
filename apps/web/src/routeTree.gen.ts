@@ -15,6 +15,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as PosIndexRouteImport } from './routes/pos/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/orders/': typeof OrdersIndexRoute
   '/pos/': typeof PosIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/orders': typeof OrdersIndexRoute
   '/pos': typeof PosIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/settings': typeof SettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/orders/': typeof OrdersIndexRoute
   '/pos/': typeof PosIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/categories/' | '/dashboard/' | '/orders/' | '/pos/' | '/products/'
+    | '/'
+    | '/categories/'
+    | '/dashboard/'
+    | '/orders/'
+    | '/pos/'
+    | '/products/'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/categories' | '/dashboard' | '/orders' | '/pos' | '/products'
+  to:
+    | '/'
+    | '/categories'
+    | '/dashboard'
+    | '/orders'
+    | '/pos'
+    | '/products'
+    | '/settings'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/orders/'
     | '/pos/'
     | '/products/'
+    | '/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   OrdersIndexRoute: typeof OrdersIndexRoute
   PosIndexRoute: typeof PosIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrdersIndexRoute: OrdersIndexRoute,
   PosIndexRoute: PosIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

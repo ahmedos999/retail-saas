@@ -32,7 +32,7 @@ function RouteComponent() {
               Manage your products, inventory and pricing
             </p>
           </div>
-          <Button variant="secondary" onClick={() => setIsOpen(true)}>
+          <Button variant="primary" onClick={() => setIsOpen(true)}>
             <div className="flex items-center">
               <Plus className="mr-2" /> <div>Add Product</div>
             </div>
