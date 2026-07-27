@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Save, Upload } from 'lucide-react'
-import { Button, FormField, StoreInfoCard, ReceiptPreview } from '@retail/ui'
+import {
+  Button,
+  FormField,
+  StoreInfoCard,
+  ReceiptPreview,
+  DropDown,
+} from '@retail/ui'
 import { useRef, useState } from 'react'
 
 export const Route = createFileRoute('/settings/')({
@@ -10,6 +16,11 @@ export const Route = createFileRoute('/settings/')({
 function RouteComponent() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [taxEnabled, setTaxEnabled] = useState(false)
+  const [priceIncludesTax, setPriceIncludesTax] = useState(false)
+  const [allowNegativeStock, setAllowNegativeStock] = useState(false)
+  const [skuRequired, setSkuRequired] = useState(true)
+  const [barcodeEnabled, setBarcodeEnabled] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -34,7 +45,7 @@ function RouteComponent() {
 
       <div className="mt-10 grid grid-cols-4 gap-4">
         <div className="col-span-3 grid gap-4">
-          <div className="box-shadow p-4 w-full rounded-md">
+          <div className="box-shadow p-4 w-full rounded-md h-fit">
             <h2 className="font-bold ">Bussiness Information</h2>
             <p className="text-gray-500 text-sm">
               Update your store details and contact here.
@@ -114,8 +125,153 @@ function RouteComponent() {
             </div>
           </div>
           <div className="grid gap-4">
-            <div className="box-shadow p-4 w-full rounded-md"></div>
-            <div className="box-shadow p-4 w-full rounded-md"></div>
+            <div className="box-shadow p-4 w-full rounded-md">
+              <h2 className="font-bold">Sales Settings</h2>
+              <p className="text-gray-500 text-sm">
+                Configure currency, tax rules and default payment method.
+              </p>
+
+              <div className="mt-4 grid grid-cols-4 gap-4">
+                <div>
+                  <label
+                    htmlFor="currency"
+                    className="text-sm font-medium text-gray-700 block mb-2"
+                  >
+                    Currency
+                  </label>
+                  <DropDown
+                    id="currency"
+                    options={[
+                      'USD — US Dollar',
+                      'EUR — Euro',
+                      'GBP — British Pound',
+                      'CAD — Canadian Dollar',
+                      'AED — UAE Dirham',
+                    ]}
+                    placeholder="Currency"
+                  />
+                </div>
+
+                {/* Tax Enabled */}
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-sm font-medium text-gray-700">
+                    Tax Enabled
+                  </span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={taxEnabled}
+                    onClick={() => setTaxEnabled((v) => !v)}
+                    className={`mt-1 relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+                      taxEnabled ? 'bg-red-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-200 ${
+                        taxEnabled ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Tax Percentage */}
+                <FormField
+                  id="taxRate"
+                  label="Tax Percentage (%)"
+                  type="number"
+                  min="0"
+                  max="100"
+                  placeholder="e.g. 8"
+                  disabled={!taxEnabled}
+                  className={!taxEnabled ? 'opacity-40 cursor-not-allowed' : ''}
+                />
+
+                {/* Price Includes Tax */}
+                <div className="flex flex-col gap-1.5">
+                  <span className={`text-sm font-medium ${!taxEnabled ? 'text-gray-400' : 'text-gray-700'}`}>
+                    Price Includes Tax
+                  </span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={priceIncludesTax}
+                    disabled={!taxEnabled}
+                    onClick={() => setPriceIncludesTax((v) => !v)}
+                    className={`mt-1 relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+                      !taxEnabled
+                        ? 'bg-gray-100 cursor-not-allowed opacity-40'
+                        : priceIncludesTax
+                          ? 'bg-red-600 cursor-pointer'
+                          : 'bg-gray-200 cursor-pointer'
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-200 ${
+                        priceIncludesTax ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Default Payment Method */}
+                <div>
+                  <label
+                    htmlFor="defaultPaymentMethod"
+                    className="text-sm font-medium text-gray-700 block mb-2"
+                  >
+                    Default Pay ment Method
+                  </label>
+                  <DropDown
+                    id="defaultPaymentMethod"
+                    options={['Cash', 'Credit Card', 'PayPal', 'Bank Transfer']}
+                    placeholder="Default Payment Method"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="box-shadow p-4 w-full rounded-md">
+              <h2 className="font-bold">Inventory Settings</h2>
+              <p className="text-gray-500 text-sm">
+                Configure stock tracking, SKU and barcode requirements.
+              </p>
+
+              <div className="mt-4 grid grid-cols-4 gap-4">
+                <FormField
+                  id="lowStockWarning"
+                  label="Low Stock Warning"
+                  type="number"
+                  min="0"
+                  placeholder="e.g. 10"
+                />
+
+                {(
+                  [
+                    { label: 'Allow Negative Stock', value: allowNegativeStock, setter: setAllowNegativeStock },
+                    { label: 'SKU Required', value: skuRequired, setter: setSkuRequired },
+                    { label: 'Barcode', value: barcodeEnabled, setter: setBarcodeEnabled },
+                  ] as const
+                ).map(({ label, value, setter }) => (
+                  <div key={label} className="flex flex-col gap-1.5">
+                    <span className="text-sm font-medium text-gray-700">{label}</span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={value}
+                      onClick={() => setter((v) => !v)}
+                      className={`mt-1 relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+                        value ? 'bg-red-600' : 'bg-gray-200'
+                      }`}
+                    >
+                      <span
+                        className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-200 ${
+                          value ? 'translate-x-5' : 'translate-x-0'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <div className="grid gap-4">
