@@ -6,6 +6,7 @@ export { DropDown } from "./form/dropdown";
 export { FormField } from "./form/formField";
 export { StoreInfoCard } from "./settings/StoreInfoCard";
 export { ReceiptPreview } from "./settings/ReceiptPreview";
+export { AuthLayout } from "./auth/AuthLayout";
 export { Table, TableRow, TableCell, Pagination } from "./table";
 export { ProductModel } from "./model/ProductModel";
 export { CategoryModel } from "./model/categoryModel";

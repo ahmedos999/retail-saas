@@ -15,7 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/products/')({
+export const Route = createFileRoute('/_app/products/')({
   component: RouteComponent,
 })
 

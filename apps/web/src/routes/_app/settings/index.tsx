@@ -9,7 +9,7 @@ import {
 } from '@retail/ui'
 import { useRef, useState } from 'react'
 
-export const Route = createFileRoute('/settings/')({
+export const Route = createFileRoute('/_app/settings/')({
   component: RouteComponent,
 })
 

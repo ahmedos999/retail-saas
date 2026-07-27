@@ -6,7 +6,7 @@ import { CueList } from '#/components/CueList'
 import { CategoryCardList } from '#/components/CategoryCardList'
 import { categoryCueItems, categoryCardItems } from '#/data/cueItems'
 
-export const Route = createFileRoute('/categories/')({
+export const Route = createFileRoute('/_app/categories/')({
   component: RouteComponent,
 })
 

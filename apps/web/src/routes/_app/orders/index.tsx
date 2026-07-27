@@ -14,7 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Eye, MoreHorizontal, ReceiptText } from 'lucide-react'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/orders/')({
+export const Route = createFileRoute('/_app/orders/')({
   component: RouteComponent,
 })
 

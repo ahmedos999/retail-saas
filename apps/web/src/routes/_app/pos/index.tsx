@@ -4,7 +4,7 @@ import { ProductList } from '#/components/ProductList'
 import { CartItems, categories, items } from '#/data/products'
 import { Cart } from '#/components/Cart'
 
-export const Route = createFileRoute('/pos/')({
+export const Route = createFileRoute('/_app/pos/')({
   component: RouteComponent,
 })
 

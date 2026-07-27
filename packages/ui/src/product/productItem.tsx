@@ -18,12 +18,12 @@ export const ProductItem = ({
       <div className="flex justify-between items-center ">
         <p className="text-gray-600 text-sm">Stock: {stock}</p>
         {stock === 0 && (
-          <div className="bg-red-300 p-1 rounded-md text-red-600 text-xs">
+          <div className="bg-red-300 p-1 rounded-full text-red-600 text-xs">
             out of stock
           </div>
         )}
         {stock > 0 && stock < 5 && (
-          <div className="bg-yellow-300 p-1 rounded-md text-yellow-600 text-xs">
+          <div className="bg-yellow-300 p-1 rounded-full text-yellow-600 text-xs">
             low stock
           </div>
         )}
