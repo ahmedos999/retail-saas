@@ -1,5 +1,6 @@
 export { Button } from "./button";
 export { SideBar } from "./sideBar";
+export type { SideBarUser } from "./sideBar";
 export { CueCard } from "./cueCard";
 export { Search } from "./form/search";
 export { DropDown } from "./form/dropdown";

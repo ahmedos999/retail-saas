@@ -7,11 +7,26 @@ export interface NavLink {
   link: "dashboard" | "products" | "categories" | "pos" | "orders" | "settings";
 }
 
-interface SideBarProps {
-  links: NavLink[];
+export interface SideBarUser {
+  fullName: string;
+  email: string;
 }
 
-export const SideBar = ({ links }: SideBarProps) => {
+interface SideBarProps {
+  links: NavLink[];
+  user: SideBarUser;
+}
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
+
+export const SideBar = ({ links, user }: SideBarProps) => {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -36,12 +51,12 @@ export const SideBar = ({ links }: SideBarProps) => {
         </ul>
       </div>
       <div className="flex items-center gap-3 text-white">
-        <div className="w-9 aspect-square rounded-full flex justify-center items-center bg-gray-500">
-          AO
+        <div className="w-9 aspect-square rounded-full flex justify-center items-center bg-gray-500 shrink-0">
+          {initials(user.fullName)}
         </div>
-        <div>
-          <h4>Ahmed Osman</h4>
-          <p className="text-sm text-gray-300">Admin</p>
+        <div className="min-w-0">
+          <h4 className="truncate">{user.fullName}</h4>
+          <p className="text-sm text-gray-300 truncate">{user.email}</p>
         </div>
       </div>
     </div>

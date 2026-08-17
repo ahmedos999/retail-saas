@@ -1,4 +1,4 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import {
   LayoutDashboard,
   Package,
@@ -8,8 +8,14 @@ import {
   Settings,
 } from 'lucide-react'
 import { SideBar, type NavLink } from '@retail/ui'
+import { getAuthData, isAuthenticated } from '#/util/auth'
 
 export const Route = createFileRoute('/_app')({
+  beforeLoad: () => {
+    if (!isAuthenticated()) {
+      throw redirect({ to: '/login' })
+    }
+  },
   component: AppLayout,
 })
 
@@ -23,9 +29,10 @@ const navLinks: NavLink[] = [
 ]
 
 function AppLayout() {
+  const user = getAuthData()!.user
   return (
     <div className="flex h-screen overflow-hidden">
-      <SideBar links={navLinks} />
+      <SideBar links={navLinks} user={user} />
       <main className="flex-1 overflow-y-auto">
         <Outlet />
       </main>
