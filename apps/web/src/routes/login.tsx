@@ -1,53 +1,41 @@
 import { AuthLayout, Button, FormField } from '@retail/ui'
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import { Eye, EyeOff } from 'lucide-react'
 import { useActionState, useState } from 'react'
-import { isAuthenticated, saveAuthData, type AuthUser } from '#/util/auth'
+import { getCurrentUserFn, loginFn } from '#/util/authentication'
 
 export const Route = createFileRoute('/login')({
-  beforeLoad: () => {
-    if (isAuthenticated()) {
-      throw redirect({ to: '/dashboard' })
-    }
+  beforeLoad: async () => {
+    const user = await getCurrentUserFn()
+    if (user) throw redirect({ to: '/dashboard' })
   },
   component: LoginPage,
 })
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const [error, action, isPending] = useActionState(
     async (_prev: string | null, formData: FormData) => {
-      try {
-        const res = await fetch('http://localhost:3000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formData.get('email'),
-            password: formData.get('password'),
-          }),
-        })
-        const data = await res.json()
+      const result = await loginFn({
+        data: {
+          email: formData.get('email') as string,
+          password: formData.get('password') as string,
+        },
+      })
 
-        if (!res.ok) return data.message ?? 'Invalid credentials'
-
-        console.log('Login successful:', data)
-
-        const user: AuthUser = {
-          fullName: data.fullName,
-          email: data.email,
-          id: data.id,
-          role: data.role,
-          storeId: data.storeId,
-        }
-        saveAuthData({ user, token: data.token })
-        navigate({ to: '/dashboard' })
-        return null
-      } catch (e) {
-        console.log(e)
-        return 'Something went wrong. Please try again.'
+      if (result?.error) {
+        console.error('Login failed UI failed:', result.error)
+        return result.error
       }
+
+      if (result?.success) {
+        console.log('Login successful, redirecting to dashboard...')
+        router.navigate({ to: '/dashboard' })
+      }
+
+      return null
     },
     null,
   )

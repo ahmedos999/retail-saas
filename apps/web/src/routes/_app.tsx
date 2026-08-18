@@ -8,13 +8,17 @@ import {
   Settings,
 } from 'lucide-react'
 import { SideBar, type NavLink } from '@retail/ui'
-import { getAuthData, isAuthenticated } from '#/util/auth'
+import { getCurrentUserFn } from '#/util/authentication'
+import type { userData } from '#/util/session'
 
 export const Route = createFileRoute('/_app')({
-  beforeLoad: () => {
-    if (!isAuthenticated()) {
+  beforeLoad: async () => {
+    const user = await getCurrentUserFn()
+    console.log('user', user)
+    if (!user) {
       throw redirect({ to: '/login' })
     }
+    return { user }
   },
   component: AppLayout,
 })
@@ -29,7 +33,9 @@ const navLinks: NavLink[] = [
 ]
 
 function AppLayout() {
-  const user = getAuthData()!.user
+  const { user } = Route.useRouteContext() as { user: userData }
+
+  console.log('user in app layout', user)
   return (
     <div className="flex h-screen overflow-hidden">
       <SideBar links={navLinks} user={user} />

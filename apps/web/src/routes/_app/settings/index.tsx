@@ -10,13 +10,14 @@ import {
 } from '@retail/ui'
 import { useRef, useState } from 'react'
 import { useActionState } from 'react'
-import { getAuthData } from '#/util/auth'
+import { useAppSession, type userData } from '#/util/session'
 
 export const Route = createFileRoute('/_app/settings/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { user } = Route.useRouteContext() as { user: userData }
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [taxEnabled, setTaxEnabled] = useState(false)
@@ -29,19 +30,17 @@ function RouteComponent() {
   const [addUserError, addUserAction, isAddingUser] = useActionState(
     async (_prev: string | null, formData: FormData) => {
       try {
-        const auth = getAuthData()
         const res = await fetch('http://localhost:3000/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${auth?.token ?? ''}`,
           },
           body: JSON.stringify({
             fullName: formData.get('fullName'),
             email: formData.get('email'),
             role: formData.get('role'),
             password: formData.get('password'),
-            storeId: auth?.user.storeId ?? '',
+            storeId: user.storeId ?? '',
             isActive: true,
           }),
         })
