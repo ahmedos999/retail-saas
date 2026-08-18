@@ -1,13 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Save, Upload } from 'lucide-react'
+import { Save, Upload, UserPlus } from 'lucide-react'
 import {
   Button,
   FormField,
   StoreInfoCard,
   ReceiptPreview,
   DropDown,
+  AddUserModal,
 } from '@retail/ui'
 import { useRef, useState } from 'react'
+import { useActionState } from 'react'
+import { getAuthData } from '#/util/auth'
 
 export const Route = createFileRoute('/_app/settings/')({
   component: RouteComponent,
@@ -21,6 +24,38 @@ function RouteComponent() {
   const [allowNegativeStock, setAllowNegativeStock] = useState(false)
   const [skuRequired, setSkuRequired] = useState(true)
   const [barcodeEnabled, setBarcodeEnabled] = useState(false)
+  const [showAddUser, setShowAddUser] = useState(false)
+
+  const [addUserError, addUserAction, isAddingUser] = useActionState(
+    async (_prev: string | null, formData: FormData) => {
+      try {
+        const auth = getAuthData()
+        const res = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth?.token ?? ''}`,
+          },
+          body: JSON.stringify({
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            role: formData.get('role'),
+            password: formData.get('password'),
+            storeId: auth?.user.storeId ?? '',
+            isActive: true,
+          }),
+        })
+        const json = await res.json()
+        if (!res.ok) return json.message ?? 'Failed to add user'
+        setShowAddUser(false)
+        return null
+      } catch (e) {
+        console.log(e)
+        return 'Something went wrong'
+      }
+    },
+    null,
+  )
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -29,6 +64,14 @@ function RouteComponent() {
 
   return (
     <div className="p-6">
+      {showAddUser && (
+        <AddUserModal
+          onClose={() => setShowAddUser(false)}
+          onSubmit={addUserAction}
+          isPending={isAddingUser}
+          error={addUserError}
+        />
+      )}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Settings</h1>
@@ -36,11 +79,18 @@ function RouteComponent() {
             Manage your Store preference and configuration
           </p>
         </div>
-        <Button variant="primary">
-          <div className="flex items-center">
-            <Save className="mr-2" /> <div>Save Settings</div>
-          </div>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={() => setShowAddUser(true)}>
+            <div className="flex items-center">
+              <UserPlus className="mr-2" size={16} /> <div>Add User</div>
+            </div>
+          </Button>
+          <Button variant="primary">
+            <div className="flex items-center">
+              <Save className="mr-2" /> <div>Save Settings</div>
+            </div>
+          </Button>
+        </div>
       </div>
 
       <div className="mt-10 grid grid-cols-4 gap-4">
@@ -188,7 +238,9 @@ function RouteComponent() {
 
                 {/* Price Includes Tax */}
                 <div className="flex flex-col gap-1.5">
-                  <span className={`text-sm font-medium ${!taxEnabled ? 'text-gray-400' : 'text-gray-700'}`}>
+                  <span
+                    className={`text-sm font-medium ${!taxEnabled ? 'text-gray-400' : 'text-gray-700'}`}
+                  >
                     Price Includes Tax
                   </span>
                   <button
@@ -246,13 +298,27 @@ function RouteComponent() {
 
                 {(
                   [
-                    { label: 'Allow Negative Stock', value: allowNegativeStock, setter: setAllowNegativeStock },
-                    { label: 'SKU Required', value: skuRequired, setter: setSkuRequired },
-                    { label: 'Barcode', value: barcodeEnabled, setter: setBarcodeEnabled },
+                    {
+                      label: 'Allow Negative Stock',
+                      value: allowNegativeStock,
+                      setter: setAllowNegativeStock,
+                    },
+                    {
+                      label: 'SKU Required',
+                      value: skuRequired,
+                      setter: setSkuRequired,
+                    },
+                    {
+                      label: 'Barcode',
+                      value: barcodeEnabled,
+                      setter: setBarcodeEnabled,
+                    },
                   ] as const
                 ).map(({ label, value, setter }) => (
                   <div key={label} className="flex flex-col gap-1.5">
-                    <span className="text-sm font-medium text-gray-700">{label}</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      {label}
+                    </span>
                     <button
                       type="button"
                       role="switch"

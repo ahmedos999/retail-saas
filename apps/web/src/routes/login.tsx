@@ -1,10 +1,5 @@
 import { AuthLayout, Button, FormField } from '@retail/ui'
-import {
-  Link,
-  createFileRoute,
-  redirect,
-  useNavigate,
-} from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeOff } from 'lucide-react'
 import { useActionState, useState } from 'react'
 import { isAuthenticated, saveAuthData, type AuthUser } from '#/util/auth'
@@ -37,10 +32,14 @@ function LoginPage() {
 
         if (!res.ok) return data.message ?? 'Invalid credentials'
 
+        console.log('Login successful:', data)
+
         const user: AuthUser = {
           fullName: data.fullName,
           email: data.email,
           id: data.id,
+          role: data.role,
+          storeId: data.storeId,
         }
         saveAuthData({ user, token: data.token })
         navigate({ to: '/dashboard' })
@@ -120,16 +119,6 @@ function LoginPage() {
             {isPending ? 'Signing in…' : 'Sign In'}
           </Button>
         </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{' '}
-          <Link
-            to="/register"
-            className="text-secondary font-medium hover:underline"
-          >
-            Create one
-          </Link>
-        </p>
       </div>
     </AuthLayout>
   )

@@ -11,6 +11,7 @@ export { AuthLayout } from "./auth/AuthLayout";
 export { Table, TableRow, TableCell, Pagination } from "./table";
 export { ProductModel } from "./model/ProductModel";
 export { CategoryModel } from "./model/categoryModel";
+export { AddUserModal } from "./model/AddUserModel";
 export { default as ListView } from "../../../apps/web/src/components/ListView";
 export type { ListViewItem } from "../../../apps/web/src/components/ListView";
 export { SalesChart } from "./dashboard/SalesChart";
