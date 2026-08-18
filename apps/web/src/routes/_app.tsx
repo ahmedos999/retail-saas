@@ -14,7 +14,6 @@ import type { userData } from '#/util/session'
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
     const user = await getCurrentUserFn()
-    console.log('user', user)
     if (!user) {
       throw redirect({ to: '/login' })
     }

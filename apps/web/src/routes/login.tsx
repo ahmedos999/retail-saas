@@ -31,7 +31,6 @@ function LoginPage() {
       }
 
       if (result?.success) {
-        console.log('Login successful, redirecting to dashboard...')
         router.navigate({ to: '/dashboard' })
       }
 
