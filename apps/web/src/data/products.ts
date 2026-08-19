@@ -2,7 +2,6 @@ import type { TableColumn } from '@retail/ui'
 
 export const productColumns: TableColumn[] = [
   { key: 'product', header: 'Product' },
-  { key: 'category', header: 'Category' },
   { key: 'SKU', header: 'SKU' },
   { key: 'stock', header: 'Stock' },
   { key: 'price', header: 'Price' },

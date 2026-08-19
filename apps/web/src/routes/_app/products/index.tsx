@@ -49,16 +49,6 @@ function RouteComponent() {
         />
       )}
       <div className="p-6">
-        {networkProducts && (
-          <>
-            <p className="text-sm text-gray-500">
-              You have {networkProducts.length} products.
-            </p>
-            {networkProducts.map((p) => (
-              <div key={p.id}>{p.name}</div>
-            ))}
-          </>
-        )}
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">Products</h1>
@@ -89,43 +79,44 @@ function RouteComponent() {
           />
         </div>
 
-        <div className="mt-6">
-          <Table columns={productColumns}>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>{product.sku}</TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>
-                  <span
-                    className={
-                      product.status === 'In Stock'
-                        ? 'text-green-500'
-                        : product.status === 'Low Stock'
-                          ? 'text-yellow-500'
-                          : 'text-red-500'
-                    }
-                  >
-                    {product.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Button variant="secondary" onClick={() => setIsOpen(true)}>
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </Table>
-          <Pagination
-            totalItems={100}
-            pageSize={5}
-            currentPage={1}
-            onPageChange={(page) => console.log('Page changed to:', page)}
-          />
-        </div>
+        {networkProducts && (
+          <div className="mt-6">
+            <Table columns={productColumns}>
+              {networkProducts.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.sku}</TableCell>
+                  <TableCell>{product.stock}</TableCell>
+                  <TableCell>{product.price}</TableCell>
+                  <TableCell>
+                    <span
+                      className={
+                        product.status === 'Active'
+                          ? 'text-green-500'
+                          : product.status === 'OutOfStock'
+                            ? 'text-yellow-500'
+                            : 'text-red-500'
+                      }
+                    >
+                      {product.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="secondary" onClick={() => setIsOpen(true)}>
+                      Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </Table>
+            <Pagination
+              totalItems={100}
+              pageSize={5}
+              currentPage={1}
+              onPageChange={(page) => console.log('Page changed to:', page)}
+            />
+          </div>
+        )}
       </div>
     </>
   )

@@ -14,6 +14,7 @@ export interface SideBarUser {
 
 interface SideBarProps {
   links: NavLink[];
+  logout: () => void;
   user: SideBarUser;
 }
 
@@ -26,7 +27,7 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export const SideBar = ({ links, user }: SideBarProps) => {
+export const SideBar = ({ links, user, logout }: SideBarProps) => {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -54,11 +55,17 @@ export const SideBar = ({ links, user }: SideBarProps) => {
         <div className="w-9 aspect-square rounded-full flex justify-center items-center bg-gray-500 shrink-0">
           {initials(user.fullName)}
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 max-w-32">
           <h4 className="truncate">{user.fullName}</h4>
           <p className="text-sm text-gray-300 truncate">{user.email}</p>
         </div>
       </div>
+      <button
+        onClick={logout}
+        className="text-sm text-gray-300 hover:text-gray-100 transition-colors self-start "
+      >
+        Logout
+      </button>
     </div>
   );
 };

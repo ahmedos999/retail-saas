@@ -1,9 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button, CategoryModel, DropDown, Pagination, Search } from '@retail/ui'
+import { getCategoryIcon } from '#/util/getCategoryIcon'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { CueList } from '#/components/CueList'
-import { CategoryCardList } from '#/components/CategoryCardList'
+import {
+  CategoryCardList,
+  type CategoryCardItem,
+} from '#/components/CategoryCardList'
 import { categoryCueItems, categoryCardItems } from '#/data/cueItems'
 import { useQuery } from '@tanstack/react-query'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
@@ -19,22 +23,25 @@ function RouteComponent() {
   const { data: categories } = useQuery(
     categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
   )
+
+  const categoryCardItems: CategoryCardItem[] =
+    categories?.map((category) => ({
+      title: category.name,
+      description: category.description ?? '',
+      icon: getCategoryIcon(category.icon),
+      id: category.id,
+      lowStock: 50,
+      numberOfProducts: 50,
+      revenue: '$50,000',
+      bgColor: category.color,
+    })) ?? []
+
   return (
     <>
       {isOpen && <CategoryModel onClose={() => setIsOpen(false)} />}
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            {categories && (
-              <>
-                <p className="text-sm text-gray-500">
-                  You have {categories.length} categories.
-                </p>
-                {categories.map((category) => (
-                  <div key={category.id}>{category.name}</div>
-                ))}
-              </>
-            )}
             <h2 className="text-2xl font-bold mb-4">Categories</h2>
             <p>Organize your product categories here.</p>
           </div>

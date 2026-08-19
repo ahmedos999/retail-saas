@@ -11,6 +11,8 @@ import { SideBar, type NavLink } from '@retail/ui'
 import { getCurrentUserFn } from '#/util/authentication'
 import type { userData } from '#/util/session'
 
+import { logoutFn } from '#/util/authentication'
+
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
     const user = await getCurrentUserFn()
@@ -33,11 +35,9 @@ const navLinks: NavLink[] = [
 
 function AppLayout() {
   const { user } = Route.useRouteContext() as { user: userData }
-
-  console.log('user in app layout', user)
   return (
     <div className="flex h-screen overflow-hidden">
-      <SideBar links={navLinks} user={user} />
+      <SideBar links={navLinks} user={user} logout={logoutFn} />
       <main className="flex-1 overflow-y-auto">
         <Outlet />
       </main>
