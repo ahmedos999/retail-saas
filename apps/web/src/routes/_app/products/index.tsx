@@ -20,6 +20,11 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_app/products/')({
+  loader: ({ context }) => {
+    return context.queryClient.ensureQueryData(
+      productsQueryOptions({ storeId: context.user.storeId }),
+    )
+  },
   component: RouteComponent,
 })
 

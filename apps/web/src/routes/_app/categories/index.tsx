@@ -15,6 +15,11 @@ import { Route as AppRoute } from '#/routes/_app'
 import { useCreateCategory } from '#/feature/categories/categories.mutation'
 
 export const Route = createFileRoute('/_app/categories/')({
+  loader: ({ context }) => {
+    return context.queryClient.ensureQueryData(
+      categoriesQueryOptions({ storeId: context.user.storeId }),
+    )
+  },
   component: RouteComponent,
 })
 
