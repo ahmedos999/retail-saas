@@ -1,3 +1,5 @@
+import { useActionState } from "react";
+
 type Category = {
   id: string;
   name: string;
@@ -8,12 +10,32 @@ type Category = {
   createdAt: Date;
 };
 
+export type CreateCategoryData = Omit<Category, "id" | "createdAt">;
+
 interface CategoryModalProps {
   onClose: () => void;
-  onSubmit?: (category: Omit<Category, "id" | "createdAt">) => void;
+  onSubmit: (category: CreateCategoryData) => Promise<void>;
 }
 
 export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
+  const [error, action, isPending] = useActionState(
+    async (_prev: string | null, formData: FormData) => {
+      try {
+        await onSubmit({
+          name: formData.get("name") as string,
+          description: (formData.get("description") as string) || undefined,
+          color: (formData.get("color") as string) || undefined,
+          icon: (formData.get("icon") as string) || undefined,
+          isActive: formData.get("isActive") === "true",
+        });
+        return null;
+      } catch (e) {
+        return (e as Error).message ?? "Something went wrong";
+      }
+    },
+    null,
+  );
+
   return (
     <div
       className="flex items-center justify-center h-full w-full bg-gray-800/80 absolute top-0 left-0 z-50"
@@ -33,21 +55,9 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
           </button>
         </div>
 
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const data = new FormData(form);
-            onSubmit?.({
-              name: data.get("name") as string,
-              description: (data.get("description") as string) || undefined,
-              color: (data.get("color") as string) || undefined,
-              icon: (data.get("icon") as string) || undefined,
-              isActive: data.get("isActive") === "true",
-            });
-          }}
-        >
+        <form className="flex flex-col gap-4" action={action}>
+          {error && <p className="text-sm text-red-500">{error}</p>}
+
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
               Category Name
@@ -98,6 +108,7 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
             <label className="text-sm font-medium text-gray-700">Status</label>
             <select
               name="isActive"
+              defaultValue="true"
               className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
             >
               <option value="true">Active</option>
@@ -115,9 +126,10 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-md bg-primary text-white text-sm hover:opacity-90 transition-opacity"
+              disabled={isPending}
+              className="px-4 py-2 rounded-md bg-primary text-white text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              Add Category
+              {isPending ? "Adding..." : "Add Category"}
             </button>
           </div>
         </form>

@@ -7,3 +7,16 @@ export function getCategoriesQueryFn(filters: CategoryFilters = {}) {
     query: filters,
   })
 }
+
+export function createCategory(category: Partial<Category>) {
+  return apiClient<Category>(`${API_ROUTES.categories.create}`, {
+    method: 'POST',
+    body: JSON.stringify(category),
+  })
+}
+
+export function deleteCategory(categoryId: string) {
+  return apiClient<void>(`${API_ROUTES.categories.delete(categoryId)}`, {
+    method: 'DELETE',
+  })
+}

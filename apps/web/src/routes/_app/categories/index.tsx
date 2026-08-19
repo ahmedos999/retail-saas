@@ -12,6 +12,7 @@ import { categoryCueItems } from '#/data/cueItems'
 import { useQuery } from '@tanstack/react-query'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { Route as AppRoute } from '#/routes/_app'
+import { useCreateCategory } from '#/feature/categories/categories.mutation'
 
 export const Route = createFileRoute('/_app/categories/')({
   component: RouteComponent,
@@ -23,6 +24,8 @@ function RouteComponent() {
   const { data: categories } = useQuery(
     categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
   )
+
+  const { mutateAsync: createCategory } = useCreateCategory()
 
   const categoryCardItems: CategoryCardItem[] =
     categories?.map((category) => ({
@@ -38,7 +41,15 @@ function RouteComponent() {
 
   return (
     <>
-      {isOpen && <CategoryModel onClose={() => setIsOpen(false)} />}
+      {isOpen && (
+        <CategoryModel
+          onClose={() => setIsOpen(false)}
+          onSubmit={async (data) => {
+            await createCategory({ ...data, storeId: user?.storeId ?? '' })
+            setIsOpen(false)
+          }}
+        />
+      )}
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
           <div>
