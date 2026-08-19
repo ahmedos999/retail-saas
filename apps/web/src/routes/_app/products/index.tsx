@@ -1,6 +1,6 @@
 import { CueList } from '#/components/CueList'
 import { productCueItems } from '#/data/cueItems'
-import { products, productColumns } from '#/data/products'
+import { productColumns } from '#/data/products'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { useCreateProduct } from '#/feature/products/products.mutation'
 import { productsQueryOptions } from '#/feature/products/products.queries'

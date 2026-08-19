@@ -8,7 +8,7 @@ import {
   CategoryCardList,
   type CategoryCardItem,
 } from '#/components/CategoryCardList'
-import { categoryCueItems, categoryCardItems } from '#/data/cueItems'
+import { categoryCueItems } from '#/data/cueItems'
 import { useQuery } from '@tanstack/react-query'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { Route as AppRoute } from '#/routes/_app'
