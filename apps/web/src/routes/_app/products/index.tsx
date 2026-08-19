@@ -1,6 +1,8 @@
 import { CueList } from '#/components/CueList'
 import { productCueItems } from '#/data/cueItems'
 import { products, productColumns } from '#/data/products'
+import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
+import { useCreateProduct } from '#/feature/products/products.mutation'
 import { productsQueryOptions } from '#/feature/products/products.queries'
 import {
   Button,
@@ -26,10 +28,26 @@ function RouteComponent() {
   const { data: networkProducts } = useQuery(
     productsQueryOptions({ storeId: user?.storeId ?? '' }),
   )
+  const { data: categories } = useQuery(
+    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+  )
+  const { mutateAsync: createProduct } = useCreateProduct()
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
-      {isOpen && <ProductModel onClose={() => setIsOpen(false)} />}
+      {isOpen && (
+        <ProductModel
+          onClose={() => setIsOpen(false)}
+          onSubmit={async (data) => {
+            await createProduct(data as any)
+            setIsOpen(false)
+          }}
+          categories={
+            categories?.map((c) => ({ id: c.id, name: c.name })) ?? []
+          }
+          storeId={user?.storeId ?? ''}
+        />
+      )}
       <div className="p-6">
         {networkProducts && (
           <>

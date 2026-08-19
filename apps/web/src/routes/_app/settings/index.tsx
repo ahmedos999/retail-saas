@@ -10,7 +10,7 @@ import {
 } from '@retail/ui'
 import { useRef, useState } from 'react'
 import { useActionState } from 'react'
-import { useAppSession, type userData } from '#/util/session'
+import type { userData } from '#/util/session'
 
 export const Route = createFileRoute('/_app/settings/')({
   component: RouteComponent,

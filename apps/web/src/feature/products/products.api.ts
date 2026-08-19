@@ -7,3 +7,16 @@ export function getProductsQueryFn(filters: ProductFilters = {}) {
     query: filters,
   })
 }
+
+export function createProduct(product: Product) {
+  return apiClient<Product>(`${API_ROUTES.products.create}`, {
+    method: 'POST',
+    body: JSON.stringify(product),
+  })
+}
+
+export function deleteProduct(productId: string) {
+  return apiClient<void>(`${API_ROUTES.products.delete(productId)}`, {
+    method: 'DELETE',
+  })
+}

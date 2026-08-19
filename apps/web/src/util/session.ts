@@ -1,4 +1,3 @@
-// utils/session.ts
 import { useSession } from '@tanstack/react-start/server'
 
 export type userData = {
