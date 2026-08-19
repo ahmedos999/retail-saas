@@ -1,6 +1,7 @@
 import { CueList } from '#/components/CueList'
 import { productCueItems } from '#/data/cueItems'
 import { products, productColumns } from '#/data/products'
+import { productsQueryOptions } from '#/feature/products/products.queries'
 import {
   Button,
   DropDown,
@@ -11,6 +12,7 @@ import {
   TableCell,
   TableRow,
 } from '@retail/ui'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
@@ -20,11 +22,25 @@ export const Route = createFileRoute('/_app/products/')({
 })
 
 function RouteComponent() {
+  const { user } = Route.useRouteContext()
+  const { data: networkProducts } = useQuery(
+    productsQueryOptions({ storeId: user?.storeId ?? '' }),
+  )
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
       {isOpen && <ProductModel onClose={() => setIsOpen(false)} />}
       <div className="p-6">
+        {networkProducts && (
+          <>
+            <p className="text-sm text-gray-500">
+              You have {networkProducts.length} products.
+            </p>
+            {networkProducts.map((p) => (
+              <div key={p.id}>{p.name}</div>
+            ))}
+          </>
+        )}
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">Products</h1>

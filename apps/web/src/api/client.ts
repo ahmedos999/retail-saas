@@ -1,5 +1,9 @@
 const API_URL = 'http://localhost:3000'
 
+type ApiClientOptions = RequestInit & {
+  query?: Record<string, string | number | boolean | undefined>
+}
+
 export class apiError extends Error {
   constructor(
     message: string,
@@ -11,13 +15,25 @@ export class apiError extends Error {
 
 export async function apiClient<T>(
   path: string,
-  options: RequestInit,
+  options: ApiClientOptions = {},
 ): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    ...options,
+  const { query, ...fetchOptions } = options
+
+  const url = new URL(path, API_URL)
+
+  if (query) {
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value))
+      }
+    })
+  }
+
+  const res = await fetch(url, {
+    ...fetchOptions,
     headers: {
       'Content-Type': 'application/json',
-      ...(options.headers || {}),
+      ...(fetchOptions.headers || {}),
     },
   })
   if (!res.ok) {

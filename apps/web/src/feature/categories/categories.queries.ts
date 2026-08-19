@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
-import { getCategoriesFn } from './categories.api'
+import { getCategoriesQueryFn } from './categories.api'
+import type { CategoryFilters } from './categories.types'
 
 export const categoriesKeys = {
   all: ['categories'] as const,
@@ -8,10 +9,10 @@ export const categoriesKeys = {
   details: (id: string) => [...categoriesKeys.all, 'detail', id] as const,
 }
 
-export const categoriesQueryOptions = (storeId: string) =>
+export const categoriesQueryOptions = (filters?: CategoryFilters) =>
   queryOptions({
-    queryKey: [...categoriesKeys.lists(), storeId],
-    queryFn: () => getCategoriesFn(storeId),
+    queryKey: [...categoriesKeys.lists(), filters ?? {}],
+    queryFn: () => getCategoriesQueryFn(filters),
 
     staleTime: 1000 * 60 * 5, // 5 minutes
   })

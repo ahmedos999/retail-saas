@@ -16,7 +16,9 @@ export const Route = createFileRoute('/_app/categories/')({
 function RouteComponent() {
   const { user } = AppRoute.useRouteContext()
   const [isOpen, setIsOpen] = useState(false)
-  const { data: categories } = useQuery(categoriesQueryOptions(user.storeId))
+  const { data: categories } = useQuery(
+    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+  )
   return (
     <>
       {isOpen && <CategoryModel onClose={() => setIsOpen(false)} />}

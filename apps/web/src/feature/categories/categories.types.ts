@@ -9,3 +9,11 @@ export type Category = {
   color: string
   icon: string | null
 }
+
+export type CategoryFilters = {
+  page?: number
+  limit?: number
+  search?: string
+  category?: string
+  storeId?: string
+}
