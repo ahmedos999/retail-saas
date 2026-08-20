@@ -1,6 +1,8 @@
 import { CueList } from '#/components/CueList'
-import { ordersCueItems, ordersData } from '#/data/cueItems'
-import { getStatusColor } from '#/util/getStatusColot'
+import { ordersCueItems } from '#/data/cueItems'
+import { orderQueryOptions } from '#/feature/orders/order.queries'
+import { getStatusColor } from '#/util/getStatusColor'
+import { toFixedPrice } from '#/util/toFixedPrice'
 import {
   Button,
   DropDown,
@@ -10,6 +12,7 @@ import {
   TableCell,
   TableRow,
 } from '@retail/ui'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Eye, MoreHorizontal, ReceiptText } from 'lucide-react'
 import { useState } from 'react'
@@ -32,6 +35,10 @@ const orderColumns = [
 
 function RouteComponent() {
   const [currentPage, setCurrentPage] = useState(1)
+  const { user } = Route.useRouteContext()
+  const { data: orders } = useQuery(
+    orderQueryOptions({ storeId: user.storeId }),
+  )
 
   return (
     <div className="p-6">
@@ -64,46 +71,56 @@ function RouteComponent() {
 
       <div className="mt-6">
         <Table columns={orderColumns}>
-          {ordersData.map((order) => (
-            <TableRow key={order.orderNumber}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="flex justify-center items-center w-8 h-8 bg-red-300 rounded-md">
-                    <ReceiptText size={16} className="text-red-600" />
+          {orders &&
+            orders.length > 0 &&
+            orders?.map((order) => (
+              <TableRow key={order.orderNumber}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="flex justify-center items-center w-8 h-8 bg-red-300 rounded-md">
+                      <ReceiptText size={16} className="text-red-600" />
+                    </div>
+                    <span className="font-bold">{order.orderNumber}</span>
                   </div>
-                  <span className="font-bold">{order.orderNumber}</span>
-                </div>
-              </TableCell>
-              <TableCell>{order.date}</TableCell>
-              <TableCell>{order.time}</TableCell>
-              <TableCell>{order.customer}</TableCell>
-              <TableCell>{order.items}</TableCell>
-              <TableCell>{order.paymentMethod}</TableCell>
-              <TableCell>
-                <span className="font-medium">{order.total}</span>
-              </TableCell>
-              <TableCell>
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
-                >
-                  {order.status}
-                </span>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Button variant="secondary">
-                    <Eye size={14} />
-                  </Button>
-                  <Button variant="secondary">
-                    <MoreHorizontal size={14} />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell>{String(order.createdAt).split('T')[0]}</TableCell>
+                <TableCell>
+                  {String(order.createdAt)
+                    .split('T')[1]
+                    .split(':')
+                    .slice(0, 2)
+                    .join(':')}
+                </TableCell>
+                <TableCell>{order.customerName}</TableCell>
+                <TableCell>{order.itemCount ?? 0}</TableCell>
+                <TableCell>{order.paymentMethod}</TableCell>
+                <TableCell>
+                  <span className="font-medium">
+                    {toFixedPrice(order.total)}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
+                  >
+                    {order.status}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Button variant="secondary">
+                      <Eye size={14} />
+                    </Button>
+                    <Button variant="secondary">
+                      <MoreHorizontal size={14} />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
         </Table>
         <Pagination
-          totalItems={ordersData.length}
+          totalItems={orders?.length || 0}
           pageSize={5}
           currentPage={currentPage}
           onPageChange={setCurrentPage}

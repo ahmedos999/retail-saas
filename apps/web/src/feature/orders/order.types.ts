@@ -16,6 +16,7 @@ export type Order = {
   total: string
   paymentMethod: 'Cash' | 'Card' | 'Online' | 'Other'
   notes: string | null
+  itemCount?: number
 }
 
 export type OrderFilters = {

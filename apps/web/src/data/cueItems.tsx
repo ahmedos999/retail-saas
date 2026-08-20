@@ -11,7 +11,6 @@ import {
   XCircle,
 } from 'lucide-react'
 import type { CueItem } from '#/components/CueList'
-import type { Order } from '#/util/types'
 import type { ListViewItem, SalesDataPoint } from '@retail/ui'
 
 export const productCueItems: CueItem[] = [
@@ -173,89 +172,6 @@ export const ordersCueItems: CueItem[] = [
     percentage: '1.4%',
     icon: <XCircle size={24} className="text-red-800" />,
     bgColor: 'bg-red-200',
-  },
-]
-
-export const ordersData: Order[] = [
-  {
-    orderNumber: '#ORD-001',
-    date: 'Jul 20, 2026',
-    time: '09:14 AM',
-    customer: 'John Doe',
-    items: 3,
-    paymentMethod: 'Credit Card',
-    total: '$124.99',
-    status: 'Completed',
-  },
-  {
-    orderNumber: '#ORD-002',
-    date: 'Jul 20, 2026',
-    time: '10:32 AM',
-    customer: 'Jane Smith',
-    items: 1,
-    paymentMethod: 'PayPal',
-    total: '$49.00',
-    status: 'Pending',
-  },
-  {
-    orderNumber: '#ORD-003',
-    date: 'Jul 19, 2026',
-    time: '03:05 PM',
-    customer: 'Alice Johnson',
-    items: 5,
-    paymentMethod: 'Cash',
-    total: '$310.50',
-    status: 'Processing',
-  },
-  {
-    orderNumber: '#ORD-004',
-    date: 'Jul 19, 2026',
-    time: '04:48 PM',
-    customer: 'Bob Martinez',
-    items: 2,
-    paymentMethod: 'Bank Transfer',
-    total: '$88.00',
-    status: 'Cancelled',
-  },
-  {
-    orderNumber: '#ORD-005',
-    date: 'Jul 18, 2026',
-    time: '11:20 AM',
-    customer: 'Carol White',
-    items: 4,
-    paymentMethod: 'Credit Card',
-    total: '$215.75',
-    status: 'Completed',
-  },
-  {
-    orderNumber: '#ORD-006',
-    date: 'Jul 18, 2026',
-    time: '01:55 PM',
-    customer: 'David Lee',
-    items: 2,
-    paymentMethod: 'PayPal',
-    total: '$96.40',
-    status: 'Completed',
-  },
-  {
-    orderNumber: '#ORD-007',
-    date: 'Jul 17, 2026',
-    time: '08:30 AM',
-    customer: 'Eva Brown',
-    items: 6,
-    paymentMethod: 'Credit Card',
-    total: '$472.00',
-    status: 'Processing',
-  },
-  {
-    orderNumber: '#ORD-008',
-    date: 'Jul 17, 2026',
-    time: '02:10 PM',
-    customer: 'Frank Wilson',
-    items: 1,
-    paymentMethod: 'Cash',
-    total: '$34.99',
-    status: 'Pending',
   },
 ]
 
