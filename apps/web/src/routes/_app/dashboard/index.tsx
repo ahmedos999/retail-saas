@@ -1,5 +1,4 @@
 import { CueList } from '#/components/CueList'
-import OrderList from '#/components/OrderList'
 import StockList from '#/components/StockList'
 import {
   dashboardCueItems,
@@ -40,7 +39,8 @@ function RouteComponent() {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <OrderList title="Recent Orders" items={recentOrdersData} />
+        {/* <OrderList title="Recent Orders" items={recentOrdersData} /> */}
+        <StockList title="Low Stock Products" items={lowStockData} />
         <StockList title="Low Stock Products" items={lowStockData} />
       </div>
     </div>

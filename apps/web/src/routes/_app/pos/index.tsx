@@ -1,14 +1,33 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CategoryList, Checkout, Pagination, SaleInfoCard } from '@retail/ui'
 import { ProductList } from '#/components/ProductList'
-import { CartItems, categories, items } from '#/data/products'
+import { CartItems, items } from '#/data/products'
 import { Cart } from '#/components/Cart'
+import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
+import { productsQueryOptions } from '#/feature/products/products.queries'
+import { useQuery } from '@tanstack/react-query'
+import { getCategoryIcon } from '#/util/getCategoryIcon'
 
 export const Route = createFileRoute('/_app/pos/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { user } = Route.useRouteContext()
+  const { data: networkProducts } = useQuery(
+    productsQueryOptions({ storeId: user?.storeId ?? '' }),
+  )
+  const { data: netWorkcategories } = useQuery(
+    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+  )
+
+  const categories =
+    netWorkcategories?.map((category) => ({
+      id: category.id,
+      name: category.name,
+      icon: getCategoryIcon(category.icon),
+      bgColor: category.color,
+    })) ?? []
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto p-6 flex">
