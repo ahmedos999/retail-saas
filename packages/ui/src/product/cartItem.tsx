@@ -1,5 +1,4 @@
 import { Minus, Plus } from "lucide-react";
-import { useState } from "react";
 
 type CartItemProps = {
   img: string;
@@ -8,6 +7,7 @@ type CartItemProps = {
   price: number;
   quantity: number;
   onClose: () => void;
+  onQuantityChange: (quantity: number) => void;
 };
 
 export const CartItem = ({
@@ -17,8 +17,8 @@ export const CartItem = ({
   price,
   quantity,
   onClose,
+  onQuantityChange,
 }: CartItemProps) => {
-  const [localQuantity, setLocalQuantity] = useState(quantity);
   return (
     <div className="flex justify-between gap-4 p-4 border-b border-gray-200">
       <img src={img} alt={name} className="w-16 h-16 rounded-md self-center" />
@@ -29,14 +29,14 @@ export const CartItem = ({
         <div className="flex items-center gap-2 border border-gray-300 rounded-md  w-fit">
           <button
             className="border rounded-md p-1 border-gray-500"
-            onClick={() => setLocalQuantity(localQuantity - 1)}
+            onClick={() => onQuantityChange(quantity - 1)}
           >
             <Minus size={18} />
           </button>
-          <div className="text-sm mx-2">{localQuantity}</div>
+          <div className="text-sm mx-2">{quantity}</div>
           <button
             className="border rounded-md p-1 border-gray-500"
-            onClick={() => setLocalQuantity(localQuantity + 1)}
+            onClick={() => onQuantityChange(quantity + 1)}
           >
             <Plus size={18} />
           </button>
@@ -46,7 +46,7 @@ export const CartItem = ({
       {/* prices */}
       <div className="flex flex-col gap-2 justify-between text-sm">
         <p>${price.toFixed(2)}</p>
-        <p className="font-bold">${(price * localQuantity).toFixed(2)}</p>
+        <p className="font-bold">${(price * quantity).toFixed(2)}</p>
       </div>
 
       {/* close */}

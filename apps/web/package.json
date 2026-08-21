@@ -29,8 +29,10 @@
     "nitro": "npm:nitro-nightly@latest",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "recharts": "^2.15.3",
-    "tailwindcss": "^4.1.18"
+    "react-is": "^19.2.8",
+    "recharts": "^2.15.4",
+    "tailwindcss": "^4.1.18",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",

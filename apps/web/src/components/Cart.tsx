@@ -1,27 +1,33 @@
 import { CartItem } from '@retail/ui'
 
-type CartProps = {
-  items: {
-    img: string
-    name: string
-    description: string
-    price: number
-    quantity: number
-  }[]
+export type CartLine = {
+  id: string
+  img: string
+  name: string
+  description: string
+  price: number
+  quantity: number
 }
 
-export const Cart = ({ items }: CartProps) => {
+type CartProps = {
+  items: CartLine[]
+  onQuantityChange: (id: string, quantity: number) => void
+  onRemove: (id: string) => void
+}
+
+export const Cart = ({ items, onQuantityChange, onRemove }: CartProps) => {
   return (
     <div className="flex flex-col gap-4">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <CartItem
-          key={index}
+          key={item.id}
           img={item.img}
           name={item.name}
           description={item.description}
           price={item.price}
           quantity={item.quantity}
-          onClose={() => {}}
+          onClose={() => onRemove(item.id)}
+          onQuantityChange={(quantity) => onQuantityChange(item.id, quantity)}
         />
       ))}
     </div>

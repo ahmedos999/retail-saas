@@ -1,26 +1,22 @@
+import type { Product } from '#/feature/products/products.types'
 import { ProductItem } from '@retail/ui'
 
 type ProductListProps = {
-  products: {
-    name: string
-
-    price: number
-    imageUrl: string
-    stock: number
-  }[]
+  products: Product[]
+  onProductClick?: (product: Product) => void
 }
 
-export const ProductList = ({ products }: ProductListProps) => {
+export const ProductList = ({ products, onProductClick }: ProductListProps) => {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
-      {products.map((product, index) => (
+      {products.map((product) => (
         <ProductItem
-          key={index}
+          key={product.id}
           name={product.name}
-
           price={product.price}
-          imageUrl={product.imageUrl}
+          imageUrl={'/product1.png'}
           stock={product.stock}
+          onClick={() => onProductClick?.(product)}
         />
       ))}
     </div>

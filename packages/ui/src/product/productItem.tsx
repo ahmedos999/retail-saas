@@ -1,8 +1,9 @@
 type ProductItemProps = {
   name: string;
-  price: number;
+  price: string;
   imageUrl: string;
   stock: number;
+  onClick?: () => void;
 };
 
 export const ProductItem = ({
@@ -10,11 +11,17 @@ export const ProductItem = ({
   price,
   imageUrl,
   stock,
+  onClick,
 }: ProductItemProps) => {
   return (
-    <div className="p-4  rounded-lg box-shadow w-full grid gap-1">
+    <div
+      onClick={stock > 0 ? onClick : undefined}
+      className={`p-4 rounded-lg box-shadow w-full grid gap-1 ${stock > 0 ? "cursor-pointer" : "cursor-not-allowed opacity-75"}`}
+    >
       <img src={imageUrl} alt={name} className="h-32 mb-4 mx-auto" />
-      <h2>{name}</h2>
+      <h2 className="text-sm line-clamp-1" title={name}>
+        {name}
+      </h2>
       <div className="flex justify-between items-center ">
         <p className="text-gray-600 text-sm">Stock: {stock}</p>
         {stock === 0 && (
@@ -28,7 +35,7 @@ export const ProductItem = ({
           </div>
         )}
       </div>
-      <p className=" font-bold">${price.toFixed(2)}</p>
+      <p className=" font-bold">${price}</p>
     </div>
   );
 };

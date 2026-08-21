@@ -1,12 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CategoryList, Checkout, Pagination, SaleInfoCard } from '@retail/ui'
 import { ProductList } from '#/components/ProductList'
-import { CartItems, items } from '#/data/products'
 import { Cart } from '#/components/Cart'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { productsQueryOptions } from '#/feature/products/products.queries'
 import { useQuery } from '@tanstack/react-query'
 import { getCategoryIcon } from '#/util/getCategoryIcon'
+import { useCartStore } from '#/feature/pos/cart.store'
 
 export const Route = createFileRoute('/_app/pos/')({
   component: RouteComponent,
@@ -14,6 +14,13 @@ export const Route = createFileRoute('/_app/pos/')({
 
 function RouteComponent() {
   const { user } = Route.useRouteContext()
+  const {
+    items: cartItems,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+  } = useCartStore()
   const { data: networkProducts } = useQuery(
     productsQueryOptions({ storeId: user?.storeId ?? '' }),
   )
@@ -28,6 +35,12 @@ function RouteComponent() {
       icon: getCategoryIcon(category.icon),
       bgColor: category.color,
     })) ?? []
+
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  )
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto p-6 flex">
@@ -38,7 +51,12 @@ function RouteComponent() {
           </div>
 
           <div className="mt-8">
-            <ProductList products={items} />
+            {networkProducts && (
+              <ProductList
+                products={networkProducts}
+                onProductClick={addToCart}
+              />
+            )}
           </div>
           <div className="mt-auto">
             <Pagination
@@ -54,14 +72,18 @@ function RouteComponent() {
             Current Sale
           </h2>
           <div className="mt-4">
-            <Cart items={CartItems} />
+            <Cart
+              items={cartItems}
+              onQuantityChange={updateQuantity}
+              onRemove={removeFromCart}
+            />
           </div>
           <div className="mt-4">
             <Checkout
-              subtotal={100}
+              subtotal={subtotal}
               discount={10}
               taxRate={0.05}
-              ClearCart={() => console.log('Clear Cart')}
+              ClearCart={clearCart}
               Checkout={() => console.log('Checkout')}
             />
           </div>
