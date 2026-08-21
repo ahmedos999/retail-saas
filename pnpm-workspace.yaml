@@ -4,3 +4,7 @@ packages:
 allowBuilds:
   esbuild: false
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - db0@0.4.0
+  - nitro-nightly@3.0.1-20260821-005124-e36e7a60
+  - unstorage@2.0.0-alpha.9

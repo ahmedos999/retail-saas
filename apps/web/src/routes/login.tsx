@@ -6,7 +6,10 @@ import { getCurrentUserFn, loginFn } from '#/util/authentication'
 
 export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
-    const user = await getCurrentUserFn()
+    const user = await getCurrentUserFn().catch((err) => {
+      if (err instanceof DOMException && err.name === 'AbortError') return null
+      throw err
+    })
     if (user) throw redirect({ to: '/dashboard' })
   },
   component: LoginPage,
@@ -18,20 +21,31 @@ function LoginPage() {
 
   const [error, action, isPending] = useActionState(
     async (_prev: string | null, formData: FormData) => {
-      const result = await loginFn({
-        data: {
-          email: formData.get('email') as string,
-          password: formData.get('password') as string,
-        },
-      })
+      let result: Awaited<ReturnType<typeof loginFn>> | undefined
+      try {
+        result = await loginFn({
+          data: {
+            email: formData.get('email') as string,
+            password: formData.get('password') as string,
+          },
+        })
+      } catch (err) {
+        console.error('loginFn threw:', err)
+        return 'Request was interrupted, please try again.'
+      }
 
-      if (result?.error) {
-        console.error('Login failed UI failed:', result.error)
+      if (!result) {
+        console.error('loginFn returned no result')
+        return 'Something went wrong, please try again.'
+      }
+
+      if (result.error) {
+        console.error('Login failed:', result.error)
         return result.error
       }
 
-      if (result?.success) {
-        router.navigate({ to: '/dashboard' })
+      if (result.success) {
+        await router.navigate({ to: '/dashboard' })
       }
 
       return null

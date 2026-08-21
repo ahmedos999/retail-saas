@@ -15,7 +15,10 @@ import { logoutFn } from '#/util/authentication'
 
 export const Route = createFileRoute('/_app')({
   beforeLoad: async () => {
-    const user = await getCurrentUserFn()
+    const user = await getCurrentUserFn().catch((err) => {
+      if (err instanceof DOMException && err.name === 'AbortError') return null
+      throw err
+    })
     if (!user) {
       throw redirect({ to: '/login' })
     }

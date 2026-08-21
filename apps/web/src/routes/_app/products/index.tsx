@@ -5,6 +5,7 @@ import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { useCreateProduct } from '#/feature/products/products.mutation'
 import { productsQueryOptions } from '#/feature/products/products.queries'
 import type { Product } from '#/feature/products/products.types'
+import { debounce } from '#/util/debounce'
 import {
   Button,
   DropDown,
@@ -36,6 +37,7 @@ function RouteComponent() {
   )
 
   const [categoryId, setCategoryId] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState<Product['status'] | ''>('')
 
   const { data: networkProducts } = useQuery(
@@ -43,8 +45,15 @@ function RouteComponent() {
       storeId: user.storeId,
       categoryId: categoryId || undefined,
       status: status || undefined,
+      search: searchTerm || undefined,
     }),
   )
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    console.log('Search term changed:', event.target.value)
+    setSearchTerm(event.target.value)
+  }
+  // TODO ADD debounced search to avoid too many requests.
+  // const debouncedHandleSearchChange = debounce(handleSearchChange, 300)
 
   const { mutateAsync: createProduct } = useCreateProduct()
   const [isOpen, setIsOpen] = useState(false)
@@ -83,7 +92,12 @@ function RouteComponent() {
         </div>
 
         <div className="mt-6 flex gap-4">
-          <Search placeholder="Search products..." className="flex-1" />
+          <Search
+            placeholder="Search products..."
+            className="flex-1"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
           <DropDown
             options={[
               { label: 'All categories', value: '' },
