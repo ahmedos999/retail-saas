@@ -4,6 +4,7 @@ import { productColumns } from '#/data/products'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import { useCreateProduct } from '#/feature/products/products.mutation'
 import { productsQueryOptions } from '#/feature/products/products.queries'
+import type { Product } from '#/feature/products/products.types'
 import {
   Button,
   DropDown,
@@ -30,12 +31,21 @@ export const Route = createFileRoute('/_app/products/')({
 
 function RouteComponent() {
   const { user } = Route.useRouteContext()
-  const { data: networkProducts } = useQuery(
-    productsQueryOptions({ storeId: user?.storeId ?? '' }),
-  )
   const { data: categories } = useQuery(
-    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+    categoriesQueryOptions({ storeId: user.storeId }),
   )
+
+  const [categoryId, setCategoryId] = useState('')
+  const [status, setStatus] = useState<Product['status'] | ''>('')
+
+  const { data: networkProducts } = useQuery(
+    productsQueryOptions({
+      storeId: user.storeId,
+      categoryId: categoryId || undefined,
+      status: status || undefined,
+    }),
+  )
+
   const { mutateAsync: createProduct } = useCreateProduct()
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -50,7 +60,7 @@ function RouteComponent() {
           categories={
             categories?.map((c) => ({ id: c.id, name: c.name })) ?? []
           }
-          storeId={user?.storeId ?? ''}
+          storeId={user.storeId}
         />
       )}
       <div className="p-6">
@@ -75,12 +85,25 @@ function RouteComponent() {
         <div className="mt-6 flex gap-4">
           <Search placeholder="Search products..." className="flex-1" />
           <DropDown
-            options={['Shoes', 'Clothing', 'Accessories']}
+            options={[
+              { label: 'All categories', value: '' },
+              ...(categories?.map((c) => ({ label: c.name, value: c.id })) ??
+                []),
+            ]}
             placeholder="All categories"
+            value={categoryId}
+            onChange={setCategoryId}
           />
           <DropDown
-            options={['Active', 'Inactive', 'Pending']}
+            options={[
+              { label: 'All', value: '' },
+              { label: 'Active', value: 'Active' },
+              { label: 'Inactive', value: 'Inactive' },
+              { label: 'Out of Stock', value: 'OutOfStock' },
+            ]}
             placeholder="All Status"
+            value={status}
+            onChange={(value) => setStatus(value as Product['status'] | '')}
           />
         </div>
 

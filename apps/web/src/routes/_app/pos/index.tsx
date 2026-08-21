@@ -7,6 +7,7 @@ import { productsQueryOptions } from '#/feature/products/products.queries'
 import { useQuery } from '@tanstack/react-query'
 import { getCategoryIcon } from '#/util/getCategoryIcon'
 import { useCartStore } from '#/feature/pos/cart.store'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/_app/pos/')({
   component: RouteComponent,
@@ -14,6 +15,7 @@ export const Route = createFileRoute('/_app/pos/')({
 
 function RouteComponent() {
   const { user } = Route.useRouteContext()
+  const [categoryId, setCategoryId] = useState('')
   const {
     items: cartItems,
     addToCart,
@@ -22,10 +24,13 @@ function RouteComponent() {
     clearCart,
   } = useCartStore()
   const { data: networkProducts } = useQuery(
-    productsQueryOptions({ storeId: user?.storeId ?? '' }),
+    productsQueryOptions({
+      storeId: user.storeId,
+      categoryId: categoryId || undefined,
+    }),
   )
   const { data: netWorkcategories } = useQuery(
-    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+    categoriesQueryOptions({ storeId: user.storeId }),
   )
 
   const categories =
@@ -47,7 +52,11 @@ function RouteComponent() {
         <div className="w-8/12 flex flex-col">
           <h1 className="text-xl font-bold">All Categories</h1>
           <div className="mt-4">
-            <CategoryList categories={categories} />
+            <CategoryList
+              categories={categories}
+              onClick={setCategoryId}
+              selectedID={categoryId}
+            />
           </div>
 
           <div className="mt-8">

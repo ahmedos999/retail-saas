@@ -19,6 +19,7 @@ export type ProductFilters = {
   page?: number
   limit?: number
   search?: string
-  category?: string
+  categoryId?: string
+  status?: Product['status']
   storeId?: string
 }
