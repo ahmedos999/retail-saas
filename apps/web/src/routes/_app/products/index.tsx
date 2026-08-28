@@ -19,7 +19,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/_app/products/')({
   loader: ({ context }) => {
@@ -37,20 +37,25 @@ function RouteComponent() {
   )
 
   const [categoryId, setCategoryId] = useState('')
+  const [search, setSearch] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState<Product['status'] | ''>('')
 
   const { data: networkProducts } = useQuery(
     productsQueryOptions({
       storeId: user.storeId,
-      categoryId: categoryId || undefined,
+      categoryId: categoryId,
       status: status || undefined,
-      search: searchTerm || undefined,
+      search: search,
     }),
   )
+
+  const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
+
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     console.log('Search term changed:', event.target.value)
     setSearchTerm(event.target.value)
+    debouncedSetSearch(event.target.value)
   }
   // TODO ADD debounced search to avoid too many requests.
   // const debouncedHandleSearchChange = debounce(handleSearchChange, 300)

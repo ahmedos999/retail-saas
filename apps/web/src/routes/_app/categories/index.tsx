@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Button, CategoryModel, DropDown, Pagination, Search } from '@retail/ui'
 import { getCategoryIcon } from '#/util/getCategoryIcon'
+import { debounce } from '#/util/debounce'
 import { Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CueList } from '#/components/CueList'
 import {
   CategoryCardList,
@@ -26,11 +27,21 @@ export const Route = createFileRoute('/_app/categories/')({
 function RouteComponent() {
   const { user } = AppRoute.useRouteContext()
   const [isOpen, setIsOpen] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+  const [search, setSearch] = useState('')
   const { data: categories } = useQuery(
-    categoriesQueryOptions({ storeId: user?.storeId ?? '' }),
+    categoriesQueryOptions({ storeId: user.storeId, search }),
   )
 
   const { mutateAsync: createCategory } = useCreateCategory()
+
+  // keep the debounced setter stable across renders
+  const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value)
+    debouncedSetSearch(e.target.value)
+  }
 
   const categoryCardItems: CategoryCardItem[] =
     categories?.map((category) => ({
@@ -73,7 +84,12 @@ function RouteComponent() {
         </div>
 
         <div className="mt-6 flex gap-4">
-          <Search placeholder="Search products..." className="flex-1" />
+          <Search
+            placeholder="Search products..."
+            className="flex-1"
+            value={searchInput}
+            onChange={handleSearchChange}
+          />
           <DropDown
             options={['Active', 'Inactive', 'Pending']}
             placeholder="All Status"
