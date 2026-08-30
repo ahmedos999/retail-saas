@@ -23,6 +23,8 @@ export type OrderFilters = {
   page?: number
   limit?: number
   search?: string
-  order?: string
+  status?: 'Pending' | 'Completed' | 'Refunded' | 'Cancelled'
+  paymentMethod?: 'Cash' | 'Card' | 'Online' | 'Other'
+  startDate?: Date
   storeId?: string
 }

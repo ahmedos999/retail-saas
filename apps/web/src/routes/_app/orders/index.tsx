@@ -1,6 +1,9 @@
 import { CueList } from '#/components/CueList'
 import { ordersCueItems } from '#/data/cueItems'
 import { orderQueryOptions } from '#/feature/orders/order.queries'
+import type { OrderFilters } from '#/feature/orders/order.types'
+import { debounce } from '#/util/debounce'
+import { getStartDate } from '#/util/getStartDate'
 import { getStatusColor } from '#/util/getStatusColor'
 import { toFixedPrice } from '#/util/toFixedPrice'
 import {
@@ -15,7 +18,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Eye, MoreHorizontal, ReceiptText } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/_app/orders/')({
   component: RouteComponent,
@@ -35,10 +38,35 @@ const orderColumns = [
 
 function RouteComponent() {
   const [currentPage, setCurrentPage] = useState(1)
+  // orders filters
+  const [status, setStatus] = useState<OrderFilters['status'] | undefined>(
+    undefined,
+  )
+  const [paymentMethod, setPaymentMethod] = useState<
+    OrderFilters['paymentMethod'] | undefined
+  >(undefined)
+  const [startDate, setStartDate] = useState<
+    OrderFilters['startDate'] | undefined
+  >(undefined)
+  const [search, setSearch] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const { user } = Route.useRouteContext()
   const { data: orders } = useQuery(
-    orderQueryOptions({ storeId: user.storeId }),
+    orderQueryOptions({
+      storeId: user.storeId,
+      search,
+      paymentMethod,
+      status,
+      startDate,
+    }),
   )
+
+  const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
+
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearchTerm(event.target.value)
+    debouncedSetSearch(event.target.value)
+  }
 
   return (
     <div className="p-6">
@@ -54,18 +82,28 @@ function RouteComponent() {
       </div>
 
       <div className="mt-6 flex gap-4">
-        <Search placeholder="Search orders..." className="flex-1" />
-        <DropDown
-          options={['Pending', 'Processing', 'Completed', 'Cancelled']}
-          placeholder="All Statuses"
+        <Search
+          placeholder="Enter order number..."
+          className="flex-1"
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
         <DropDown
-          options={['Credit Card', 'Cash', 'PayPal', 'Bank Transfer']}
+          options={['Pending', 'Completed', 'Refunded', 'Cancelled']}
+          placeholder="All Statuses"
+          onChange={(value) => setStatus(value as OrderFilters['status'])}
+        />
+        <DropDown
+          options={['Card', 'Cash', 'Online', 'Other']}
           placeholder="All Payments"
+          onChange={(value) =>
+            setPaymentMethod(value as OrderFilters['paymentMethod'])
+          }
         />
         <DropDown
           options={['Today', 'Last 7 Days', 'Last 30 Days', 'This Month']}
           placeholder="Date Range"
+          onChange={(value) => setStartDate(getStartDate(value))}
         />
       </div>
 
