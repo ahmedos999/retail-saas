@@ -27,7 +27,6 @@ export const Route = createFileRoute('/_app/categories/')({
 function RouteComponent() {
   const { user } = AppRoute.useRouteContext()
   const [isOpen, setIsOpen] = useState(false)
-  const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const { data: categories } = useQuery(
     categoriesQueryOptions({ storeId: user.storeId, search }),
@@ -36,10 +35,9 @@ function RouteComponent() {
   const { mutateAsync: createCategory } = useCreateCategory()
 
   // keep the debounced setter stable across renders
-  const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
+  const debouncedSetSearch = useMemo(() => debounce(setSearch, 500), [])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value)
     debouncedSetSearch(e.target.value)
   }
 
@@ -87,7 +85,6 @@ function RouteComponent() {
           <Search
             placeholder="Search products..."
             className="flex-1"
-            value={searchInput}
             onChange={handleSearchChange}
           />
           <DropDown
