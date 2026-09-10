@@ -6,7 +6,7 @@ export type Product = {
   storeId: string
   isActive: boolean
   description: string | null
-  categoryId: string | null
+  categoryId: string
   sku: string
   barcode: string | null
   price: string

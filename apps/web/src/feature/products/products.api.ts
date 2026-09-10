@@ -15,3 +15,10 @@ export function createProduct(product: Product) {
 export function deleteProduct(productId: string) {
   return apiClient.delete<void>(`${API_ROUTES.products.delete(productId)}`)
 }
+
+export function updateProduct(productId: string, product: Product) {
+  return apiClient.put<Product>(
+    `${API_ROUTES.products.update(productId)}`,
+    product,
+  )
+}

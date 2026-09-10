@@ -2,7 +2,10 @@ import { CueList } from '#/components/CueList'
 import { productCueItems } from '#/data/cueItems'
 import { productColumns } from '#/data/products'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
-import { useCreateProduct } from '#/feature/products/products.mutation'
+import {
+  useCreateProduct,
+  useUpdateProduct,
+} from '#/feature/products/products.mutation'
 import { productsQueryOptions } from '#/feature/products/products.queries'
 import type { Product } from '#/feature/products/products.types'
 import { debounce } from '#/util/debounce'
@@ -40,7 +43,7 @@ function RouteComponent() {
   const [search, setSearch] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState<Product['status'] | ''>('')
-
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const { data: networkProducts } = useQuery(
     productsQueryOptions({
       storeId: user.storeId,
@@ -50,6 +53,13 @@ function RouteComponent() {
     }),
   )
 
+  const { mutateAsync: updateProduct } = useUpdateProduct()
+
+  function handleEditProduct(product: Product) {
+    setProductToEdit(product)
+    setIsOpen(true)
+  }
+
   const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -57,8 +67,6 @@ function RouteComponent() {
     setSearchTerm(event.target.value)
     debouncedSetSearch(event.target.value)
   }
-  // TODO ADD debounced search to avoid too many requests.
-  // const debouncedHandleSearchChange = debounce(handleSearchChange, 300)
 
   const { mutateAsync: createProduct } = useCreateProduct()
   const [isOpen, setIsOpen] = useState(false)
@@ -68,13 +76,22 @@ function RouteComponent() {
         <ProductModel
           onClose={() => setIsOpen(false)}
           onSubmit={async (data) => {
-            await createProduct(data as any)
+            if (productToEdit) {
+              await updateProduct({
+                productId: productToEdit.id,
+                product: data as Product,
+              })
+            } else {
+              await createProduct(data as Product)
+            }
+            setProductToEdit(null)
             setIsOpen(false)
           }}
           categories={
             categories?.map((c) => ({ id: c.id, name: c.name })) ?? []
           }
           storeId={user.storeId}
+          product={productToEdit}
         />
       )}
       <div className="p-6">
@@ -149,7 +166,10 @@ function RouteComponent() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Button variant="secondary" onClick={() => setIsOpen(true)}>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleEditProduct(product)}
+                    >
                       Edit
                     </Button>
                   </TableCell>

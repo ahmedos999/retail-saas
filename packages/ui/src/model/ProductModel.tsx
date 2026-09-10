@@ -16,6 +16,7 @@ interface ProductModalProps {
   onSubmit: (data: CreateProductData) => Promise<void>;
   categories: { id: string; name: string }[];
   storeId: string;
+  product: CreateProductData | null;
 }
 
 export const ProductModel = ({
@@ -23,7 +24,9 @@ export const ProductModel = ({
   onSubmit,
   categories,
   storeId,
+  product,
 }: ProductModalProps) => {
+  console.log("ProductModel rendered with product:", product);
   const [error, action, isPending] = useActionState(
     async (_prev: string | null, formData: FormData) => {
       try {
@@ -55,7 +58,9 @@ export const ProductModel = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Add Product</h2>
+          <h2 className="text-xl font-bold">
+            {product ? "Edit Product" : "Add Product"}
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none"
@@ -75,6 +80,7 @@ export const ProductModel = ({
               type="text"
               name="name"
               placeholder="e.g. Air Max 90"
+              defaultValue={product?.name ?? ""}
               required
               className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
             />
@@ -88,7 +94,7 @@ export const ProductModel = ({
               <select
                 name="categoryId"
                 required
-                defaultValue=""
+                defaultValue={product?.categoryId ?? ""}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               >
                 <option value="" disabled>
@@ -107,6 +113,7 @@ export const ProductModel = ({
                 type="text"
                 name="sku"
                 placeholder="e.g. SKU12345"
+                defaultValue={product?.sku ?? ""}
                 required
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               />
@@ -124,6 +131,7 @@ export const ProductModel = ({
                 min={0}
                 step={0.01}
                 placeholder="0.00"
+                defaultValue={product?.price ?? ""}
                 required
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               />
@@ -138,6 +146,7 @@ export const ProductModel = ({
                 min={0}
                 step={0.01}
                 placeholder="0.00"
+                defaultValue={product?.costPrice ?? ""}
                 required
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               />
@@ -151,6 +160,7 @@ export const ProductModel = ({
                 type="number"
                 name="stock"
                 min={0}
+                defaultValue={product?.stock ?? ""}
                 placeholder="0"
                 required
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
@@ -162,7 +172,7 @@ export const ProductModel = ({
               </label>
               <select
                 name="status"
-                defaultValue="Active"
+                defaultValue={product?.status ?? "Active"}
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               >
                 <option value="Active">Active</option>
@@ -185,7 +195,13 @@ export const ProductModel = ({
               disabled={isPending}
               className="px-4 py-2 rounded-md bg-primary text-white text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {isPending ? "Adding..." : "Add Product"}
+              {isPending
+                ? product
+                  ? "Updating..."
+                  : "Adding..."
+                : product
+                  ? "Update Product"
+                  : "Add Product"}
             </button>
           </div>
         </form>
