@@ -23,6 +23,7 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const Route = createFileRoute('/_app/products/')({
   loader: ({ context }) => {
@@ -59,6 +60,8 @@ function RouteComponent() {
     setProductToEdit(product)
     setIsOpen(true)
   }
+  const notifySuccess = (product: Product, action: 'created' | 'updated') =>
+    toast.success(`Product ${product.name} ${action} successfully!`)
 
   const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
 
@@ -81,8 +84,10 @@ function RouteComponent() {
                 productId: productToEdit.id,
                 product: data as Product,
               })
+              notifySuccess(data as Product, 'updated')
             } else {
               await createProduct(data as Product)
+              notifySuccess(data as Product, 'created')
             }
             setProductToEdit(null)
             setIsOpen(false)
@@ -185,6 +190,7 @@ function RouteComponent() {
           </div>
         )}
       </div>
+      <ToastContainer />
     </>
   )
 }
