@@ -37,7 +37,9 @@ const AppCategoriesIndexRoute = AppCategoriesIndexRouteImport.update({
   id: '/categories/',
   path: '/categories/',
   getParentRoute: () => AppRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_app/categories/index.lazy').then((d) => d.Route),
+)
 const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
