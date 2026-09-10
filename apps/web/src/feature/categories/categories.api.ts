@@ -3,20 +3,17 @@ import { API_ROUTES } from '#/api/routes'
 import type { Category, CategoryFilters } from './categories.types'
 
 export function getCategoriesQueryFn(filters: CategoryFilters = {}) {
-  return apiClient<Category[]>(`${API_ROUTES.categories.list}`, {
-    query: filters,
-  })
+  return apiClient
+    .get<Category[]>(`${API_ROUTES.categories.list}`, {
+      params: filters,
+    })
+    .then((response) => response.data)
 }
 
 export function createCategory(category: Partial<Category>) {
-  return apiClient<Category>(`${API_ROUTES.categories.create}`, {
-    method: 'POST',
-    body: JSON.stringify(category),
-  })
+  return apiClient.post<Category>(`${API_ROUTES.categories.create}`, category)
 }
 
 export function deleteCategory(categoryId: string) {
-  return apiClient<void>(`${API_ROUTES.categories.delete(categoryId)}`, {
-    method: 'DELETE',
-  })
+  return apiClient.delete<void>(`${API_ROUTES.categories.delete(categoryId)}`)
 }

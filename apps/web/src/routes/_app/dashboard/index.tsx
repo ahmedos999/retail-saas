@@ -4,7 +4,6 @@ import {
   dashboardCueItems,
   dashboardListItems,
   lowStockData,
-  recentOrdersData,
   salesChartData,
 } from '#/data/cueItems'
 import { DropDown, ListView, SalesChart } from '@retail/ui'
