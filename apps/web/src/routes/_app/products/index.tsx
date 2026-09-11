@@ -44,6 +44,7 @@ function RouteComponent() {
   const [search, setSearch] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState<Product['status'] | ''>('')
+  const [page, setPage] = useState(1)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
   const { data: networkProducts } = useQuery(
     productsQueryOptions({
@@ -51,6 +52,7 @@ function RouteComponent() {
       categoryId: categoryId,
       status: status || undefined,
       search: search,
+      page: page,
     }),
   )
 
@@ -182,10 +184,11 @@ function RouteComponent() {
               ))}
             </Table>
             <Pagination
+              // TODO: Replace hardcoded totalItems with actual total from API response
               totalItems={100}
-              pageSize={5}
-              currentPage={1}
-              onPageChange={(page) => console.log('Page changed to:', page)}
+              pageSize={10}
+              currentPage={page}
+              onPageChange={(page) => setPage(page)}
             />
           </div>
         )}

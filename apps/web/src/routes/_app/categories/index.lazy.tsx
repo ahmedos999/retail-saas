@@ -23,8 +23,9 @@ function RouteComponent() {
   const { user } = AppRoute.useRouteContext()
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const { data: categories } = useQuery(
-    categoriesQueryOptions({ storeId: user.storeId, search }),
+    categoriesQueryOptions({ storeId: user.storeId, search, page }),
   )
 
   const { mutateAsync: createCategory } = useCreateCategory()
@@ -95,8 +96,8 @@ function RouteComponent() {
           <Pagination
             totalItems={100}
             pageSize={5}
-            currentPage={1}
-            onPageChange={(page) => console.log('Page changed to:', page)}
+            currentPage={page}
+            onPageChange={setPage}
           />
         </div>
       </div>

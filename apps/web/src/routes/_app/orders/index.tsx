@@ -58,6 +58,7 @@ function RouteComponent() {
       paymentMethod,
       status,
       startDate,
+      page: currentPage,
     }),
   )
 
@@ -158,7 +159,7 @@ function RouteComponent() {
             ))}
         </Table>
         <Pagination
-          totalItems={orders?.length || 0}
+          totalItems={100}
           pageSize={5}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
