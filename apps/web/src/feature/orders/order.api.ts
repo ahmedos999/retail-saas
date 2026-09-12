@@ -1,11 +1,17 @@
 import { apiClient } from '#/api/client'
 import { API_ROUTES } from '#/api/routes'
-import type { Order, OrderFilters } from './order.types'
+import type { CreateOrderInput, Order, OrderFilters } from './order.types'
 
-export function getOrdersQueryFn(filters: OrderFilters = {}) {
-  return apiClient
-    .get<Order[]>(`${API_ROUTES.orders.list}`, {
-      params: filters,
-    })
-    .then((response) => response.data)
+export async function getOrdersQueryFn(filters: OrderFilters = {}) {
+  const response = await apiClient.get<Order[]>(`${API_ROUTES.orders.list}`, {
+    params: filters,
+  })
+  return response.data
+}
+export async function createOrder(order: CreateOrderInput) {
+  const response = await apiClient.post<Order>(
+    `${API_ROUTES.orders.create}`,
+    order,
+  )
+  return response.data
 }

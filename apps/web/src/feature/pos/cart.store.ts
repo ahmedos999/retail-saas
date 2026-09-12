@@ -7,6 +7,7 @@ type CartState = {
     id: string
     name: string
     price: string
+    sku: string
     imageUrl?: string | null
   }) => void
   updateQuantity: (id: string, quantity: number) => void
@@ -35,6 +36,7 @@ export const useCartStore = create<CartState>((set) => ({
                 description: '',
                 price: Number(product.price),
                 quantity: 1,
+                sku: product.sku,
               },
             ],
       }

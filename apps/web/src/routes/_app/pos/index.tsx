@@ -8,6 +8,10 @@ import { useQuery } from '@tanstack/react-query'
 import { getCategoryIcon } from '#/util/getCategoryIcon'
 import { useCartStore } from '#/feature/pos/cart.store'
 import { useState } from 'react'
+import { useCreateOrderMutation } from '#/feature/orders/order.mutation'
+import type { CreateOrderInput } from '#/feature/orders/order.types'
+import { generateOrderId } from '#/util/generateOrderId.ts'
+import { toast, ToastContainer } from 'react-toastify'
 
 export const Route = createFileRoute('/_app/pos/')({
   component: RouteComponent,
@@ -46,61 +50,98 @@ function RouteComponent() {
     0,
   )
 
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-6 flex">
-        <div className="w-8/12 flex flex-col">
-          <h1 className="text-xl font-bold">All Categories</h1>
-          <div className="mt-4">
-            <CategoryList
-              categories={categories}
-              onClick={setCategoryId}
-              selectedID={categoryId}
-            />
-          </div>
+  const createOrder = useCreateOrderMutation()
+  const taxRate = 0.05
 
-          <div className="mt-8">
-            {networkProducts && (
-              <ProductList
-                products={networkProducts}
-                onProductClick={addToCart}
+  const handleCheckout = async () => {
+    const order: CreateOrderInput = {
+      storeId: user.storeId,
+      orderNumber: generateOrderId(),
+      customerName: 'Annetta Kovacek',
+      staffId: user.id,
+      subtotal,
+      taxRate,
+      taxAmount: subtotal * taxRate,
+      total: subtotal + subtotal * taxRate,
+      paymentMethod: 'Card',
+      status: 'Pending',
+      items: cartItems.map((item) => ({
+        productId: item.id,
+        productName: item.name,
+        sku: item.sku,
+        unitPrice: item.price,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity,
+      })),
+    }
+    try {
+      await createOrder.mutateAsync(order)
+      toast.success('Order created successfully')
+      clearCart()
+    } catch (error) {
+      toast.error('Failed to create order')
+    }
+  }
+
+  return (
+    <>
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-6 flex">
+          <div className="w-8/12 flex flex-col">
+            <h1 className="text-xl font-bold">All Categories</h1>
+            <div className="mt-4">
+              <CategoryList
+                categories={categories}
+                onClick={setCategoryId}
+                selectedID={categoryId}
               />
-            )}
+            </div>
+
+            <div className="mt-8">
+              {networkProducts && (
+                <ProductList
+                  products={networkProducts}
+                  onProductClick={addToCart}
+                />
+              )}
+            </div>
+            <div className="mt-auto">
+              <Pagination
+                totalItems={100}
+                pageSize={5}
+                currentPage={1}
+                onPageChange={(page) => console.log('Page changed to:', page)}
+              />
+            </div>
           </div>
-          <div className="mt-auto">
-            <Pagination
-              totalItems={100}
-              pageSize={5}
-              currentPage={1}
-              onPageChange={(page) => console.log('Page changed to:', page)}
-            />
+          <div className="w-4/12 ml-12 box-shadow rounded-md px-4 py-2 h-fit">
+            <h2 className="border-b border-gray-300 py-2 font-bold">
+              Current Sale
+            </h2>
+            <div className="mt-4">
+              <Cart
+                items={cartItems}
+                onQuantityChange={updateQuantity}
+                onRemove={removeFromCart}
+              />
+            </div>
+            <div className="mt-4">
+              <Checkout
+                subtotal={subtotal}
+                discount={10}
+                taxRate={taxRate}
+                isPending={createOrder.isPending}
+                ClearCart={clearCart}
+                Checkout={handleCheckout}
+              />
+            </div>
           </div>
         </div>
-        <div className="w-4/12 ml-12 box-shadow rounded-md px-4 py-2 h-fit">
-          <h2 className="border-b border-gray-300 py-2 font-bold">
-            Current Sale
-          </h2>
-          <div className="mt-4">
-            <Cart
-              items={cartItems}
-              onQuantityChange={updateQuantity}
-              onRemove={removeFromCart}
-            />
-          </div>
-          <div className="mt-4">
-            <Checkout
-              subtotal={subtotal}
-              discount={10}
-              taxRate={0.05}
-              ClearCart={clearCart}
-              Checkout={() => console.log('Checkout')}
-            />
-          </div>
+        <div className="border-t border-gray-200">
+          <SaleInfoCard />
         </div>
       </div>
-      <div className="border-t border-gray-200">
-        <SaleInfoCard />
-      </div>
-    </div>
+      <ToastContainer />
+    </>
   )
 }

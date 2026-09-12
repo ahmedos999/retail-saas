@@ -4,6 +4,7 @@ interface CheckoutProps {
   subtotal: number;
   discount: number;
   taxRate: number;
+  isPending?: boolean;
   ClearCart: () => void;
   Checkout: () => void;
 }
@@ -12,6 +13,7 @@ export const Checkout = ({
   subtotal,
   discount,
   taxRate,
+  isPending = false,
   ClearCart,
   Checkout,
 }: CheckoutProps) => {
@@ -60,7 +62,7 @@ export const Checkout = ({
           className=" rounded-md text-white px-4 py-2 flex-1 bg-secondary flex items-center gap-2 justify-center"
         >
           <Receipt size={18} />
-          Checkout
+          {isPending ? "Processing..." : "Checkout"}
         </button>
       </div>
     </div>
