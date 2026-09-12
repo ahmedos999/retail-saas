@@ -31,6 +31,9 @@ export type OrderFilters = {
 }
 
 export type OrderItems = {
+  id: string
+  orderId: string
+  totalPrice: string
   productId: string
   productName: string
   sku: string
