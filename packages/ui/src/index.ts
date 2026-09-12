@@ -24,3 +24,4 @@ export { SaleInfoCard } from "./product/saleInfoCard";
 export { CategoryCard } from "./category/categoryCard";
 export type { NavLink } from "./sideBar";
 export type { TableColumn, PaginationProps } from "./table";
+export { ViewOrderModal } from "./model/ViewModel";

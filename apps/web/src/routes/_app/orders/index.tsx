@@ -1,7 +1,10 @@
 import { CueList } from '#/components/CueList'
 import { ordersCueItems } from '#/data/cueItems'
-import { orderQueryOptions } from '#/feature/orders/order.queries'
-import type { OrderFilters } from '#/feature/orders/order.types'
+import {
+  orderQueryOptions,
+  orderDetailQueryOptions,
+} from '#/feature/orders/order.queries'
+import type { Order, OrderFilters } from '#/feature/orders/order.types'
 import { debounce } from '#/util/debounce'
 import { getStartDate } from '#/util/getStartDate'
 import { getStatusColor } from '#/util/getStatusColor'
@@ -14,6 +17,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  ViewOrderModal,
 } from '@retail/ui'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -50,6 +54,8 @@ function RouteComponent() {
   >(undefined)
   const [search, setSearch] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [viewOrderModalOpen, setViewOrderModalOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const { user } = Route.useRouteContext()
   const { data: orders } = useQuery(
     orderQueryOptions({
@@ -62,6 +68,10 @@ function RouteComponent() {
     }),
   )
 
+  const { data, isPending: isDetailsPending } = useQuery(
+    orderDetailQueryOptions(selectedOrder?.id ?? ''),
+  )
+
   const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -70,101 +80,117 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">Orders</h1>
-          <p className="text-gray-500">Track and manage customer orders</p>
+    <>
+      {viewOrderModalOpen && selectedOrder && (isDetailsPending || data) && (
+        <ViewOrderModal
+          onClose={() => setViewOrderModalOpen(false)}
+          currentOrder={selectedOrder}
+          onSubmit={() => {}}
+          orderDetails={data}
+        />
+      )}
+      <div className="p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold">Orders</h1>
+            <p className="text-gray-500">Track and manage customer orders</p>
+          </div>
+        </div>
+
+        <div className="mt-10 w-full">
+          <CueList items={ordersCueItems} />
+        </div>
+
+        <div className="mt-6 flex gap-4">
+          <Search
+            placeholder="Enter order number..."
+            className="flex-1"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <DropDown
+            options={['Pending', 'Completed', 'Refunded', 'Cancelled']}
+            placeholder="All Statuses"
+            onChange={(value) => setStatus(value as OrderFilters['status'])}
+          />
+          <DropDown
+            options={['Card', 'Cash', 'Online', 'Other']}
+            placeholder="All Payments"
+            onChange={(value) =>
+              setPaymentMethod(value as OrderFilters['paymentMethod'])
+            }
+          />
+          <DropDown
+            options={['Today', 'Last 7 Days', 'Last 30 Days', 'This Month']}
+            placeholder="Date Range"
+            onChange={(value) => setStartDate(getStartDate(value))}
+          />
+        </div>
+
+        <div className="mt-6">
+          <Table columns={orderColumns}>
+            {orders &&
+              orders.length > 0 &&
+              orders?.map((order) => (
+                <TableRow key={order.orderNumber}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="flex justify-center items-center w-8 h-8 bg-red-300 rounded-md">
+                        <ReceiptText size={16} className="text-red-600" />
+                      </div>
+                      <span className="font-bold">{order.orderNumber}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{String(order.createdAt).split('T')[0]}</TableCell>
+                  <TableCell>
+                    {String(order.createdAt)
+                      .split('T')[1]
+                      .split(':')
+                      .slice(0, 2)
+                      .join(':')}
+                  </TableCell>
+                  <TableCell>{order.customerName}</TableCell>
+                  <TableCell>{order.itemCount ?? 0}</TableCell>
+                  <TableCell>{order.paymentMethod}</TableCell>
+                  <TableCell>
+                    <span className="font-medium">
+                      {toFixedPrice(order.total)}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
+                    >
+                      {order.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setViewOrderModalOpen(true)
+                          setSelectedOrder(order)
+                        }}
+                      >
+                        <Eye size={14} />
+                      </Button>
+                      <Button variant="secondary">
+                        <MoreHorizontal size={14} />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </Table>
+          <Pagination
+            totalItems={100}
+            pageSize={5}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
-
-      <div className="mt-10 w-full">
-        <CueList items={ordersCueItems} />
-      </div>
-
-      <div className="mt-6 flex gap-4">
-        <Search
-          placeholder="Enter order number..."
-          className="flex-1"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <DropDown
-          options={['Pending', 'Completed', 'Refunded', 'Cancelled']}
-          placeholder="All Statuses"
-          onChange={(value) => setStatus(value as OrderFilters['status'])}
-        />
-        <DropDown
-          options={['Card', 'Cash', 'Online', 'Other']}
-          placeholder="All Payments"
-          onChange={(value) =>
-            setPaymentMethod(value as OrderFilters['paymentMethod'])
-          }
-        />
-        <DropDown
-          options={['Today', 'Last 7 Days', 'Last 30 Days', 'This Month']}
-          placeholder="Date Range"
-          onChange={(value) => setStartDate(getStartDate(value))}
-        />
-      </div>
-
-      <div className="mt-6">
-        <Table columns={orderColumns}>
-          {orders &&
-            orders.length > 0 &&
-            orders?.map((order) => (
-              <TableRow key={order.orderNumber}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="flex justify-center items-center w-8 h-8 bg-red-300 rounded-md">
-                      <ReceiptText size={16} className="text-red-600" />
-                    </div>
-                    <span className="font-bold">{order.orderNumber}</span>
-                  </div>
-                </TableCell>
-                <TableCell>{String(order.createdAt).split('T')[0]}</TableCell>
-                <TableCell>
-                  {String(order.createdAt)
-                    .split('T')[1]
-                    .split(':')
-                    .slice(0, 2)
-                    .join(':')}
-                </TableCell>
-                <TableCell>{order.customerName}</TableCell>
-                <TableCell>{order.itemCount ?? 0}</TableCell>
-                <TableCell>{order.paymentMethod}</TableCell>
-                <TableCell>
-                  <span className="font-medium">
-                    {toFixedPrice(order.total)}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
-                  >
-                    {order.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Button variant="secondary">
-                      <Eye size={14} />
-                    </Button>
-                    <Button variant="secondary">
-                      <MoreHorizontal size={14} />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-        </Table>
-        <Pagination
-          totalItems={100}
-          pageSize={5}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
-      </div>
-    </div>
+    </>
   )
 }

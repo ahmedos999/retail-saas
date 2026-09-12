@@ -13,7 +13,7 @@ export const API_ROUTES = {
     create: '/api/orders',
     delete: (id: string) => `/api/orders/${id}`,
     update: (id: string) => `/api/orders/${id}`,
-    details: (id: string) => `/api/orders/${id}`,
+    details: (id: string) => `/api/order-items/${id}`,
   },
   categories: {
     list: '/api/categories',

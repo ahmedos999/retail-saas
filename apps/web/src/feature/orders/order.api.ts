@@ -15,3 +15,10 @@ export async function createOrder(order: CreateOrderInput) {
   )
   return response.data
 }
+
+export async function getOrderDetails(orderId: string) {
+  const response = await apiClient.get<Order>(
+    `${API_ROUTES.orders.details(orderId)}`,
+  )
+  return response.data
+}

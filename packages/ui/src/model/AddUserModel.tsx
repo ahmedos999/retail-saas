@@ -18,7 +18,6 @@ export const AddUserModal = ({
 }: AddUserModalProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   return (
     <div
@@ -122,9 +121,6 @@ export const AddUserModal = ({
             />
           </div>
 
-          {passwordError && (
-            <p className="text-sm text-red-600">{passwordError}</p>
-          )}
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="flex justify-end gap-2 pt-2">

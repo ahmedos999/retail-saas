@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { getOrdersQueryFn } from './order.api'
+import { getOrdersQueryFn, getOrderDetails } from './order.api'
 import type { OrderFilters } from './order.types'
 
 export const orderKeys = {
@@ -12,4 +12,11 @@ export const orderQueryOptions = (filters?: OrderFilters) =>
   queryOptions({
     queryKey: [...orderKeys.lists(), filters ?? {}],
     queryFn: () => getOrdersQueryFn(filters),
+  })
+
+export const orderDetailQueryOptions = (orderId: string) =>
+  queryOptions({
+    queryKey: orderKeys.details(orderId),
+    queryFn: () => getOrderDetails(orderId),
+    enabled: !!orderId, // Dont make this call if you don't have an orderId
   })
