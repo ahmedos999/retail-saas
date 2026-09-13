@@ -6,7 +6,7 @@ export interface CategoryCardItem {
   title: string
   description?: string
   numberOfProducts: number
-  revenue: string
+  totalValue: string
   lowStock: number
   bgColor?: string
   icon?: LucideIcon
@@ -27,7 +27,7 @@ export const CategoryCardList = ({ categories }: CategoryCardListProps) => {
             title={category.title}
             description={category.description}
             numberOfProducts={category.numberOfProducts}
-            revenue={category.revenue}
+            totalValue={category.totalValue}
             lowStock={category.lowStock}
             bgColor={category.bgColor}
             icon={
