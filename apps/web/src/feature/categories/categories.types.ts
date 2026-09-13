@@ -8,6 +8,9 @@ export type Category = {
   description: string | null
   color: string
   icon: string | null
+  productCount: number
+  outOfStockCount: number
+  totalValue: number
 }
 
 export type CategoryFilters = {
