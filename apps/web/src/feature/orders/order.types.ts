@@ -1,65 +1,45 @@
+export type OrderStatus = 'Pending' | 'Completed' | 'Refunded' | 'Cancelled'
+export type PaymentMethod = 'Cash' | 'Card' | 'Online' | 'Other'
+
+export type OrderItem = {
+  id?: string
+  orderId?: string
+  productId: string
+  productName: string
+  sku: string
+  unitPrice: number | string
+  quantity: number
+  totalPrice: number | string
+}
+
 export type Order = {
+  id?: string
   storeId: string
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  status: 'Pending' | 'Completed' | 'Refunded' | 'Cancelled'
   orderNumber: string
-  customerId: string | null
   customerName: string
   staffId: string
-  subtotal: string
-  discountCode: string | null
-  discountAmount: string
-  taxRate: string
-  taxAmount: string
-  total: string
-  paymentMethod: 'Cash' | 'Card' | 'Online' | 'Other'
-  notes: string | null
+  status: OrderStatus
+  paymentMethod: PaymentMethod
+  subtotal: number | string
+  taxRate: number | string
+  taxAmount: number | string
+  total: number | string
+  customerId?: string | null
+  discountCode?: string | null
+  discountAmount?: number | string
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   itemCount?: number
-  items?: OrderItems[]
+  items?: OrderItem[]
 }
 
 export type OrderFilters = {
   page?: number
   limit?: number
   search?: string
-  status?: 'Pending' | 'Completed' | 'Refunded' | 'Cancelled'
-  paymentMethod?: 'Cash' | 'Card' | 'Online' | 'Other'
+  status?: OrderStatus
+  paymentMethod?: PaymentMethod
   startDate?: Date
   storeId?: string
-}
-
-export type OrderItems = {
-  id: string
-  orderId: string
-  totalPrice: string
-  productId: string
-  productName: string
-  sku: string
-  unitPrice: string
-  quantity: number
-}
-
-export type CreateOrderInput = {
-  customerName: string
-  storeId: string
-  orderNumber: string
-  staffId: string
-  subtotal: number
-  taxRate: number
-  taxAmount: number
-  total: number
-  paymentMethod: Order['paymentMethod']
-  status: Order['status']
-  items?: CreateOrderItemInput[]
-}
-
-export type CreateOrderItemInput = {
-  productId: string
-  sku: string
-  productName: string
-  unitPrice: number
-  quantity: number
-  totalPrice: number
 }

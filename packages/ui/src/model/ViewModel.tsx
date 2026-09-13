@@ -1,30 +1,27 @@
 import { ClipboardList, History, Package, ReceiptText, X } from "lucide-react";
-import { useState } from "react";
-import { FormField } from "../form/formField";
-import { DropDown } from "../form/dropdown";
 import { Table, TableCell, TableRow } from "../table";
 
 type OrderDetailItem = {
-  id: string;
-  orderId: string;
+  id?: string;
+  orderId?: string;
   productId: string;
   productName: string;
   quantity: number;
   sku: string;
-  totalPrice: string;
-  unitPrice: string;
+  totalPrice: number | string;
+  unitPrice: number | string;
 };
 
 type ViewOrderModal = {
   orderNumber: string;
-  createdAt: Date;
+  createdAt?: Date | string;
   customerName: string;
   status: "Pending" | "Refunded" | "Completed" | "Cancelled";
   paymentMethod: "Cash" | "Card" | "Online" | "Other";
-  subtotal: string;
-  total: string;
-  taxRate: string;
-  taxAmount: string;
+  subtotal: number | string;
+  total: number | string;
+  taxRate?: number | string;
+  taxAmount: number | string;
 };
 
 interface ViewOrderModalProps {
@@ -81,9 +78,6 @@ const Timeline = ({ events }: { events: TimelineEvent[] }) => (
 
 export const ViewOrderModal = ({
   onClose,
-  onSubmit,
-  isPending,
-  error,
   orderDetails,
   currentOrder,
 }: ViewOrderModalProps) => {

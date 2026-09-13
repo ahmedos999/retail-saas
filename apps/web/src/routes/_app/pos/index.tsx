@@ -9,7 +9,7 @@ import { getCategoryIcon } from '#/util/getCategoryIcon'
 import { useCartStore } from '#/feature/pos/cart.store'
 import { useState } from 'react'
 import { useCreateOrderMutation } from '#/feature/orders/order.mutation'
-import type { CreateOrderInput } from '#/feature/orders/order.types'
+import type { Order } from '#/feature/orders/order.types'
 import { generateOrderId } from '#/util/generateOrderId.ts'
 import { toast, ToastContainer } from 'react-toastify'
 
@@ -54,7 +54,7 @@ function RouteComponent() {
   const taxRate = 0.05
 
   const handleCheckout = async () => {
-    const order: CreateOrderInput = {
+    const order: Order = {
       storeId: user.storeId,
       orderNumber: generateOrderId(),
       customerName: 'Annetta Kovacek',

@@ -1,10 +1,15 @@
 import { CueList } from '#/components/CueList'
 import { ordersCueItems } from '#/data/cueItems'
+import { useUpdateOrderMutation } from '#/feature/orders/order.mutation'
 import {
   orderQueryOptions,
   orderDetailQueryOptions,
 } from '#/feature/orders/order.queries'
-import type { Order, OrderFilters } from '#/feature/orders/order.types'
+import type {
+  Order,
+  OrderFilters,
+  OrderStatus,
+} from '#/feature/orders/order.types'
 import { debounce } from '#/util/debounce'
 import { getStartDate } from '#/util/getStartDate'
 import { getStatusColor } from '#/util/getStatusColor'
@@ -21,7 +26,14 @@ import {
 } from '@retail/ui'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { Eye, MoreHorizontal, ReceiptText } from 'lucide-react'
+import {
+  CheckCircle2,
+  Eye,
+  MoreHorizontal,
+  ReceiptText,
+  RotateCcw,
+  XCircle,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/_app/orders/')({
@@ -56,6 +68,7 @@ function RouteComponent() {
   const [searchTerm, setSearchTerm] = useState('')
   const [viewOrderModalOpen, setViewOrderModalOpen] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [openMenuOrderId, setOpenMenuOrderId] = useState<string | null>(null)
   const { user } = Route.useRouteContext()
   const { data: orders } = useQuery(
     orderQueryOptions({
@@ -79,8 +92,24 @@ function RouteComponent() {
     debouncedSetSearch(event.target.value)
   }
 
+  const updateOrderMutation = useUpdateOrderMutation()
+
+  function handleStatusChange(orderId: string, newStatus: OrderStatus) {
+    updateOrderMutation.mutate({
+      orderId,
+      order: { status: newStatus },
+    })
+    setOpenMenuOrderId(null)
+  }
   return (
     <>
+      {openMenuOrderId && (
+        <div
+          className="fixed inset-0 z-10"
+          onClick={() => setOpenMenuOrderId(null)}
+        />
+      )}
+      {/* TODO: Refactor this section to improve readability and maintainability */}
       {viewOrderModalOpen && selectedOrder && (isDetailsPending || data) && (
         <ViewOrderModal
           onClose={() => setViewOrderModalOpen(false)}
@@ -175,9 +204,72 @@ function RouteComponent() {
                       >
                         <Eye size={14} />
                       </Button>
-                      <Button variant="secondary">
-                        <MoreHorizontal size={14} />
-                      </Button>
+                      <div className="relative">
+                        <Button
+                          variant="secondary"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (order.id) {
+                              setOpenMenuOrderId(
+                                openMenuOrderId === order.id ? null : order.id,
+                              )
+                            }
+                          }}
+                        >
+                          <MoreHorizontal size={14} />
+                        </Button>
+                        {order.id && openMenuOrderId === order.id && (
+                          <div className="absolute right-0 top-full mt-1.5 z-20 w-44 rounded-lg bg-white border border-gray-200 shadow-xl py-1 text-sm">
+                            <div className="px-3 py-1.5 text-xs text-gray-400 font-semibold uppercase tracking-wider border-b border-gray-100">
+                              Change Status
+                            </div>
+                            <div className="py-1">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  order.id &&
+                                  handleStatusChange(order.id, 'Completed')
+                                }
+                                disabled={order.status === 'Completed'}
+                                className="w-full text-left px-3 py-2 flex items-center gap-2.5 text-emerald-700 hover:bg-emerald-50 disabled:opacity-40 disabled:hover:bg-transparent transition-colors font-medium"
+                              >
+                                <CheckCircle2
+                                  size={14}
+                                  className="text-emerald-600"
+                                />
+                                <span>Complete</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  order.id &&
+                                  handleStatusChange(order.id, 'Refunded')
+                                }
+                                disabled={order.status === 'Refunded'}
+                                className="w-full text-left px-3 py-2 flex items-center gap-2.5 text-amber-700 hover:bg-amber-50 disabled:opacity-40 disabled:hover:bg-transparent transition-colors font-medium"
+                              >
+                                <RotateCcw
+                                  size={14}
+                                  className="text-amber-600"
+                                />
+                                <span>Refund</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  order.id &&
+                                  handleStatusChange(order.id, 'Cancelled')
+                                }
+                                disabled={order.status === 'Cancelled'}
+                                className="w-full text-left px-3 py-2 flex items-center gap-2.5 text-red-600 hover:bg-red-50 disabled:opacity-40 disabled:hover:bg-transparent transition-colors font-medium"
+                              >
+                                <XCircle size={14} className="text-red-500" />
+                                <span>Cancel</span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>
