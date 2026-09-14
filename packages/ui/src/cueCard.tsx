@@ -24,7 +24,7 @@ export const CueCard = ({
       </div>
       <div>
         <h2 className=" text-gray-500 line-clamp-1">{title}</h2>
-        <p className=" font-bold text-2xl">{value}</p>
+        <p className=" font-bold text-2xl line-clamp-1">{value}</p>
         {/* TODO make it red when it less than last month */}
         {percentage && <p className=" text-green-500 text-xs">{percentage}</p>}
         {percentage && <p className=" text-gray-500 text-xs">vs last month</p>}

@@ -7,6 +7,12 @@ export const API_ROUTES = {
     delete: (id: string) => `/api/products/${id}`,
     update: (id: string) => `/api/products/${id}`,
     details: (id: string) => `/api/products/${id}`,
+    metrics: {
+      total: '/api/products/metric/total',
+      totalValue: '/api/products/metric/total-value',
+      outOfStock: '/api/products/metric/out-of-stock',
+      lowStock: '/api/products/metric/low-stock',
+    },
   },
   orders: {
     list: '/api/orders',

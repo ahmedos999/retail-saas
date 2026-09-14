@@ -1,12 +1,17 @@
-import { CueList } from '#/components/CueList'
-import { productCueItems } from '#/data/cueItems'
+import { CueList, type CueItem } from '#/components/CueList'
 import { productColumns } from '#/data/products'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import {
   useCreateProduct,
   useUpdateProduct,
 } from '#/feature/products/products.mutation'
-import { productsQueryOptions } from '#/feature/products/products.queries'
+import {
+  productsLowStockQueryOptions,
+  productsTotalMetricsQueryOptions,
+  productsOutOfStockQueryOptions,
+  productsQueryOptions,
+  productsTotalValueQueryOptions,
+} from '#/feature/products/products.queries'
 import type { Product } from '#/feature/products/products.types'
 import { debounce } from '#/util/debounce'
 import {
@@ -19,9 +24,9 @@ import {
   TableCell,
   TableRow,
 } from '@retail/ui'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
+import { Box, DollarSign, Plus, Tag } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 
@@ -55,6 +60,19 @@ function RouteComponent() {
       page: page,
     }),
   )
+  const [
+    { data: productsTotalMetrics },
+    { data: totalValueMetrics },
+    { data: outOfStockMetrics },
+    { data: lowStockMetrics },
+  ] = useQueries({
+    queries: [
+      productsTotalMetricsQueryOptions({ storeId: user.storeId }),
+      productsTotalValueQueryOptions({ storeId: user.storeId }),
+      productsOutOfStockQueryOptions({ storeId: user.storeId }),
+      productsLowStockQueryOptions({ storeId: user.storeId }),
+    ],
+  })
 
   const { mutateAsync: updateProduct } = useUpdateProduct()
 
@@ -117,7 +135,41 @@ function RouteComponent() {
         </div>
 
         <div className="mt-10 w-full">
-          <CueList items={productCueItems} />
+          {/*TODO: this need refactoring to handle loading and error states more gracefully */}
+
+          <CueList
+            items={[
+              {
+                title: 'Total Products',
+                value: productsTotalMetrics?.data.total.toString() ?? '-',
+                percentage: '12.2%',
+                icon: <Box size={24} className="text-red-800" />,
+                bgColor: 'bg-red-200',
+              },
+              {
+                title: 'Total Value',
+                value:
+                  totalValueMetrics?.data.total?.toFixed(0).toString() ?? '-',
+                percentage: '5.2%',
+                icon: <DollarSign size={24} className="text-blue-800" />,
+                bgColor: 'bg-blue-200',
+              },
+              {
+                title: 'Out of Stock',
+                value: outOfStockMetrics?.data.total?.toString() ?? '-',
+                percentage: '8.5%',
+                icon: <Box size={24} className="text-green-800" />,
+                bgColor: 'bg-green-200',
+              },
+              {
+                title: 'Low Stock Items',
+                value: lowStockMetrics?.data.total?.toString() ?? '-',
+                percentage: '2.1%',
+                icon: <Tag size={24} className="text-yellow-800" />,
+                bgColor: 'bg-yellow-200',
+              },
+            ]}
+          />
         </div>
 
         <div className="mt-6 flex gap-4">

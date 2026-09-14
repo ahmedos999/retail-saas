@@ -22,3 +22,39 @@ export function updateProduct(productId: string, product: Product) {
     product,
   )
 }
+
+export function getProductsTotalMetrics(filters: ProductFilters = {}) {
+  return apiClient.get<{ total: number }>(
+    `${API_ROUTES.products.metrics.total}`,
+    {
+      params: filters,
+    },
+  )
+}
+
+export function getProductsTotalValueMetrics(filters: ProductFilters = {}) {
+  return apiClient.get<{ total: number }>(
+    `${API_ROUTES.products.metrics.totalValue}`,
+    {
+      params: filters,
+    },
+  )
+}
+
+export function getProductsOutOfStockMetrics(filters: ProductFilters = {}) {
+  return apiClient.get<{ total: number }>(
+    `${API_ROUTES.products.metrics.outOfStock}`,
+    {
+      params: filters,
+    },
+  )
+}
+
+export function getProductsLowStockMetrics(filters: ProductFilters = {}) {
+  return apiClient.get<{ total: number }>(
+    `${API_ROUTES.products.metrics.lowStock}`,
+    {
+      params: filters,
+    },
+  )
+}
