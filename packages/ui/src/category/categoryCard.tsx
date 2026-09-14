@@ -5,7 +5,7 @@ interface CategoryCardProps {
   title: string;
   description?: string;
   numberOfProducts: number;
-  revenue: string;
+  totalValue: string;
   lowStock: number;
   bgColor?: string;
   icon?: ReactNode;
@@ -17,7 +17,7 @@ export const CategoryCard = ({
   title,
   description,
   numberOfProducts,
-  revenue,
+  totalValue,
   lowStock,
 }: CategoryCardProps) => {
   return (
@@ -40,8 +40,8 @@ export const CategoryCard = ({
           <p className="text-gray-500 text-sm">Products</p>
         </div>
         <div>
-          <h4 className="font-bold">{revenue}</h4>
-          <p className="text-gray-500 text-sm">Revenue</p>
+          <h4 className="font-bold">{totalValue}</h4>
+          <p className="text-gray-500 text-sm">Total Value</p>
         </div>
 
         <div>

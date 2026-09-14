@@ -43,9 +43,9 @@ function RouteComponent() {
       description: category.description ?? '',
       icon: getCategoryIcon(category.icon),
       id: category.id,
-      lowStock: 50,
-      numberOfProducts: 50,
-      revenue: '$50,000',
+      lowStock: category.outOfStockCount,
+      numberOfProducts: category.productCount,
+      totalValue: `$${category.totalValue.toLocaleString()}`,
       bgColor: category.color,
     })) ?? []
 
