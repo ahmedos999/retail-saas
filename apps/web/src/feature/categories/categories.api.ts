@@ -17,3 +17,20 @@ export function createCategory(category: Partial<Category>) {
 export function deleteCategory(categoryId: string) {
   return apiClient.delete<void>(`${API_ROUTES.categories.delete(categoryId)}`)
 }
+
+export function getTotalCategories(filters: CategoryFilters = {}) {
+  return apiClient.get<{ total: number }>(`${API_ROUTES.categories.total}`, {
+    params: filters,
+  })
+}
+export function getLargestCategory(filters: CategoryFilters = {}) {
+  return apiClient.get<{ name: string }>(`${API_ROUTES.categories.largest}`, {
+    params: filters,
+  })
+}
+
+export function getEmptyCategories(filters: CategoryFilters = {}) {
+  return apiClient.get<{ total: number }>(`${API_ROUTES.categories.empty}`, {
+    params: filters,
+  })
+}

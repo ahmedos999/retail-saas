@@ -53,7 +53,7 @@ export const categoryCueItems: CueItem[] = [
     bgColor: 'bg-purple-200',
   },
   {
-    title: 'Active Categories',
+    title: 'Largest Category',
     value: '18',
     percentage: '2.1%',
     icon: <Tag size={24} className="text-green-800" />,
@@ -67,7 +67,7 @@ export const categoryCueItems: CueItem[] = [
     bgColor: 'bg-blue-200',
   },
   {
-    title: 'Avg. Products / Category',
+    title: 'Empty Categories',
     value: '52',
     percentage: '1.8%',
     icon: <DollarSign size={24} className="text-yellow-800" />,

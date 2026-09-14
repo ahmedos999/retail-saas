@@ -28,5 +28,10 @@ export const API_ROUTES = {
     delete: (id: string) => `/api/categories/${id}`,
     update: (id: string) => `/api/categories/${id}`,
     details: (id: string) => `/api/categories/${id}`,
+
+    // metrics
+    total: '/api/categories/metric/totalCategories',
+    largest: '/api/categories/metric/largestCategory',
+    empty: '/api/categories/metric/emptyCategories',
   },
 } as const

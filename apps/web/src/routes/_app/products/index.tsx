@@ -1,4 +1,4 @@
-import { CueList, type CueItem } from '#/components/CueList'
+import { CueList } from '#/components/CueList'
 import { productColumns } from '#/data/products'
 import { categoriesQueryOptions } from '#/feature/categories/categories.queries'
 import {
