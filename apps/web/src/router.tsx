@@ -1,5 +1,6 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { QueryClient } from '@tanstack/react-query'
+import { ErrorFallback } from '@retail/ui'
 import { routeTree } from './routeTree.gen'
 
 export function getRouter() {
@@ -10,6 +11,9 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 30_000,
+    defaultErrorComponent: ({ error, reset }) => (
+      <ErrorFallback error={error} reset={reset} />
+    ),
     context: { queryClient },
   })
 

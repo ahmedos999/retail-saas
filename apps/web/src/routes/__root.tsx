@@ -6,6 +6,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query'
+import { ErrorFallback } from '@retail/ui'
 
 import appCss from '../styles.css?url'
 
@@ -22,6 +23,9 @@ export const Route = createRootRouteWithContext<{
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
+  errorComponent: ({ error, reset }) => (
+    <ErrorFallback error={error} reset={reset} />
+  ),
   shellComponent: RootDocument,
 })
 
