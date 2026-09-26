@@ -42,10 +42,10 @@ function RouteComponent() {
     { data: productsTotalMetrics },
   ] = useQueries({
     queries: [
-      totalCategoriesQueryOptions({ storeId: user.storeId }),
-      largestCategoriesQueryOptions({ storeId: user.storeId }),
-      emptyCategoriesQueryOptions({ storeId: user.storeId }),
-      productsTotalMetricsQueryOptions({ storeId: user.storeId }),
+      totalCategoriesQueryOptions(user.storeId),
+      largestCategoriesQueryOptions(user.storeId),
+      emptyCategoriesQueryOptions(user.storeId),
+      productsTotalMetricsQueryOptions(user.storeId),
     ],
   })
 

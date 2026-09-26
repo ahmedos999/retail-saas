@@ -21,6 +21,10 @@ export const API_ROUTES = {
     update: (id: string) => `/api/orders/${id}`,
     updateStatus: (id: string) => `/api/orders/${id}/status`,
     details: (id: string) => `/api/order-items/${id}`,
+    total: '/api/orders/metric/total',
+    pending: '/api/orders/metric/pending',
+    completed: '/api/orders/metric/completed',
+    cancelled: '/api/orders/metric/cancelled',
   },
   categories: {
     list: '/api/categories',

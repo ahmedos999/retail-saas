@@ -67,10 +67,10 @@ function RouteComponent() {
     { data: lowStockMetrics },
   ] = useQueries({
     queries: [
-      productsTotalMetricsQueryOptions({ storeId: user.storeId }),
-      productsTotalValueQueryOptions({ storeId: user.storeId }),
-      productsOutOfStockQueryOptions({ storeId: user.storeId }),
-      productsLowStockQueryOptions({ storeId: user.storeId }),
+      productsTotalMetricsQueryOptions(user.storeId),
+      productsTotalValueQueryOptions(user.storeId),
+      productsOutOfStockQueryOptions(user.storeId),
+      productsLowStockQueryOptions(user.storeId),
     ],
   })
 

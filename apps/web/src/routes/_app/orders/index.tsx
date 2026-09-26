@@ -4,6 +4,7 @@ import { useUpdateOrderMutation } from '#/feature/orders/order.mutation'
 import {
   orderQueryOptions,
   orderDetailQueryOptions,
+  totalOrdersQueryOptions,
 } from '#/feature/orders/order.queries'
 import type {
   Order,
@@ -24,14 +25,17 @@ import {
   TableRow,
   ViewOrderModal,
 } from '@retail/ui'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import {
+  CheckCircle,
   CheckCircle2,
+  Clock,
   Eye,
   MoreHorizontal,
   ReceiptText,
   RotateCcw,
+  ShoppingCart,
   XCircle,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -81,6 +85,20 @@ function RouteComponent() {
     }),
   )
 
+  const [
+    { data: totalOrder },
+    { data: totalPending },
+    { data: totalCompleted },
+    { data: totalCancelled },
+  ] = useQueries({
+    queries: [
+      totalOrdersQueryOptions(user.storeId),
+      totalOrdersQueryOptions(user.storeId, 'Pending'),
+      totalOrdersQueryOptions(user.storeId, 'Completed'),
+      totalOrdersQueryOptions(user.storeId, 'Cancelled'),
+    ],
+  })
+
   const { data, isPending: isDetailsPending } = useQuery(
     orderDetailQueryOptions(selectedOrder?.id ?? ''),
   )
@@ -127,7 +145,38 @@ function RouteComponent() {
         </div>
 
         <div className="mt-10 w-full">
-          <CueList items={ordersCueItems} />
+          <CueList
+            items={[
+              {
+                title: 'Total Orders',
+                value: totalOrder?.total ?? '-',
+                percentage: '5.7%',
+                icon: <ShoppingCart size={24} className="text-blue-800" />,
+                bgColor: 'bg-blue-200',
+              },
+              {
+                title: 'Pending',
+                value: totalPending?.total ?? '-',
+                percentage: '2.3%',
+                icon: <Clock size={24} className="text-yellow-800" />,
+                bgColor: 'bg-yellow-200',
+              },
+              {
+                title: 'Completed',
+                value: totalCompleted?.total ?? '-',
+                percentage: '6.1%',
+                icon: <CheckCircle size={24} className="text-green-800" />,
+                bgColor: 'bg-green-200',
+              },
+              {
+                title: 'Cancelled',
+                value: totalCancelled?.total ?? '-',
+                percentage: '1.4%',
+                icon: <XCircle size={24} className="text-red-800" />,
+                bgColor: 'bg-red-200',
+              },
+            ]}
+          />
         </div>
 
         <div className="mt-6 flex gap-4">

@@ -18,19 +18,19 @@ export function deleteCategory(categoryId: string) {
   return apiClient.delete<void>(`${API_ROUTES.categories.delete(categoryId)}`)
 }
 
-export function getTotalCategories(filters: CategoryFilters = {}) {
+export function getTotalCategories(storeId: string) {
   return apiClient.get<{ total: number }>(`${API_ROUTES.categories.total}`, {
-    params: filters,
+    params: { storeId },
   })
 }
-export function getLargestCategory(filters: CategoryFilters = {}) {
+export function getLargestCategory(storeId: string) {
   return apiClient.get<{ name: string }>(`${API_ROUTES.categories.largest}`, {
-    params: filters,
+    params: { storeId },
   })
 }
 
-export function getEmptyCategories(filters: CategoryFilters = {}) {
+export function getEmptyCategories(storeId: string) {
   return apiClient.get<{ total: number }>(`${API_ROUTES.categories.empty}`, {
-    params: filters,
+    params: { storeId },
   })
 }

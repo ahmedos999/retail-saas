@@ -26,26 +26,26 @@ export const categoriesQueryOptions = (filters?: CategoryFilters) =>
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const totalCategoriesQueryOptions = (filters?: CategoryFilters) =>
+export const totalCategoriesQueryOptions = (storeId: string) =>
   queryOptions({
     queryKey: [...categoriesKeys.total()] as const,
-    queryFn: () => getTotalCategories(filters),
+    queryFn: () => getTotalCategories(storeId),
 
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const largestCategoriesQueryOptions = (filters?: CategoryFilters) =>
+export const largestCategoriesQueryOptions = (storeId: string) =>
   queryOptions({
     queryKey: [...categoriesKeys.largest()] as const,
-    queryFn: () => getLargestCategory(filters),
+    queryFn: () => getLargestCategory(storeId),
 
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const emptyCategoriesQueryOptions = (filters?: CategoryFilters) =>
+export const emptyCategoriesQueryOptions = (storeId: string) =>
   queryOptions({
     queryKey: [...categoriesKeys.empty()] as const,
-    queryFn: () => getEmptyCategories(filters),
+    queryFn: () => getEmptyCategories(storeId),
 
     staleTime: 1000 * 60 * 5, // 5 minutes
   })

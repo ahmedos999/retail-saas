@@ -29,3 +29,13 @@ export async function updateOrder(orderId: string, order: Partial<Order>) {
   )
   return response.data
 }
+
+export async function getTotalOrders(
+  storeId: string,
+  status?: Order['status'],
+) {
+  const response = await apiClient.get<any>(`${API_ROUTES.orders.total}`, {
+    params: { storeId, status },
+  })
+  return response.data
+}

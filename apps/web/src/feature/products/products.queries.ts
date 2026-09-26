@@ -27,30 +27,30 @@ export const productsQueryOptions = (filters?: ProductFilters) =>
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const productsTotalMetricsQueryOptions = (filters?: ProductFilters) =>
+export const productsTotalMetricsQueryOptions = (storeId: string) =>
   queryOptions({
-    queryKey: [...productsKeys.totalProducts(), filters ?? {}],
-    queryFn: () => getProductsTotalMetrics(filters),
+    queryKey: [...productsKeys.totalProducts()],
+    queryFn: () => getProductsTotalMetrics(storeId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const productsTotalValueQueryOptions = (filters?: ProductFilters) =>
+export const productsTotalValueQueryOptions = (storeId: string) =>
   queryOptions({
-    queryKey: [...productsKeys.totalValue(), filters ?? {}],
-    queryFn: () => getProductsTotalValueMetrics(filters),
+    queryKey: [...productsKeys.totalValue()],
+    queryFn: () => getProductsTotalValueMetrics(storeId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const productsOutOfStockQueryOptions = (filters?: ProductFilters) =>
+export const productsOutOfStockQueryOptions = (storeId: string) =>
   queryOptions({
-    queryKey: [...productsKeys.outOfStock(), filters ?? {}],
-    queryFn: () => getProductsOutOfStockMetrics(filters),
+    queryKey: [...productsKeys.outOfStock()],
+    queryFn: () => getProductsOutOfStockMetrics(storeId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-export const productsLowStockQueryOptions = (filters?: ProductFilters) =>
+export const productsLowStockQueryOptions = (storeId: string) =>
   queryOptions({
-    queryKey: [...productsKeys.lowStock(), filters ?? {}],
-    queryFn: () => getProductsLowStockMetrics(filters),
+    queryKey: [...productsKeys.lowStock()],
+    queryFn: () => getProductsLowStockMetrics(storeId),
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
