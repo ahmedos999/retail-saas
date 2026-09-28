@@ -5,9 +5,9 @@ export type Category = {
   updatedAt: Date
   storeId: string
   isActive: boolean
-  description: string | null
+  description?: string
   color: string
-  icon: string | null
+  icon?: string
   productCount: number
   outOfStockCount: number
   totalValue: number

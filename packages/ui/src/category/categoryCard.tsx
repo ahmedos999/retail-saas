@@ -9,6 +9,7 @@ interface CategoryCardProps {
   lowStock: number;
   bgColor?: string;
   icon?: ReactNode;
+  onClick?: () => void;
 }
 
 export const CategoryCard = ({
@@ -19,6 +20,7 @@ export const CategoryCard = ({
   numberOfProducts,
   totalValue,
   lowStock,
+  onClick,
 }: CategoryCardProps) => {
   return (
     <div className="flex flex-col gap-4 p-4  rounded-md box-shadow">
@@ -50,7 +52,7 @@ export const CategoryCard = ({
         </div>
       </div>
       <div className="flex justify-between">
-        <button>
+        <button onClick={onClick}>
           <Edit size={18} className="mr-1 inline" /> Edit
         </button>
         <button>

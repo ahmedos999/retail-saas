@@ -86,7 +86,6 @@ function RouteComponent() {
   const debouncedSetSearch = useMemo(() => debounce(setSearch, 300), [])
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log('Search term changed:', event.target.value)
     setSearchTerm(event.target.value)
     debouncedSetSearch(event.target.value)
   }

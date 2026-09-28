@@ -15,9 +15,14 @@ export type CreateCategoryData = Omit<Category, "id" | "createdAt">;
 interface CategoryModalProps {
   onClose: () => void;
   onSubmit: (category: CreateCategoryData) => Promise<void>;
+  categoryToEdit?: Category | null;
 }
 
-export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
+export const CategoryModel = ({
+  onClose,
+  onSubmit,
+  categoryToEdit,
+}: CategoryModalProps) => {
   const [error, action, isPending] = useActionState(
     async (_prev: string | null, formData: FormData) => {
       try {
@@ -46,7 +51,9 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Add Category</h2>
+          <h2 className="text-xl font-bold">
+            {categoryToEdit ? "Edit Category" : "Add Category"}
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none"
@@ -65,6 +72,7 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
             <input
               type="text"
               name="name"
+              defaultValue={categoryToEdit ? categoryToEdit.name : ""}
               placeholder="e.g. Electronics"
               required
               className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
@@ -78,6 +86,9 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
             <input
               type="text"
               name="description"
+              defaultValue={
+                categoryToEdit ? (categoryToEdit.description ?? "") : ""
+              }
               placeholder="e.g. Electronic devices and accessories"
               className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
             />
@@ -89,6 +100,9 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
               <input
                 type="text"
                 name="color"
+                defaultValue={
+                  categoryToEdit ? (categoryToEdit.color ?? "") : ""
+                }
                 placeholder="e.g. #3B82F6"
                 className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
               />
@@ -108,11 +122,17 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
             <label className="text-sm font-medium text-gray-700">Status</label>
             <select
               name="isActive"
-              defaultValue="true"
+              defaultValue={
+                categoryToEdit
+                  ? categoryToEdit.isActive
+                    ? "active"
+                    : "inactive"
+                  : "active"
+              }
               className="border border-gray-300 rounded-md px-3 py-2 text-sm outline-none focus:border-gray-500 transition-colors"
             >
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
 
@@ -129,7 +149,13 @@ export const CategoryModel = ({ onClose, onSubmit }: CategoryModalProps) => {
               disabled={isPending}
               className="px-4 py-2 rounded-md bg-primary text-white text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {isPending ? "Adding..." : "Add Category"}
+              {isPending
+                ? categoryToEdit
+                  ? "Editing "
+                  : "Adding "
+                : categoryToEdit
+                  ? "Edit Category"
+                  : "Add Category"}
             </button>
           </div>
         </form>

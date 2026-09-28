@@ -26,7 +26,6 @@ export const ProductModel = ({
   storeId,
   product,
 }: ProductModalProps) => {
-  console.log("ProductModel rendered with product:", product);
   const [error, action, isPending] = useActionState(
     async (_prev: string | null, formData: FormData) => {
       try {

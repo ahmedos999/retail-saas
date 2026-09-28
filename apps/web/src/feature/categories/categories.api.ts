@@ -17,6 +17,15 @@ export function createCategory(category: Partial<Category>) {
 export function deleteCategory(categoryId: string) {
   return apiClient.delete<void>(`${API_ROUTES.categories.delete(categoryId)}`)
 }
+export function updateCategory(
+  categoryId: string,
+  category: Partial<Category>,
+) {
+  return apiClient.patch<Category>(
+    `${API_ROUTES.categories.update(categoryId)}`,
+    category,
+  )
+}
 
 export function getTotalCategories(storeId: string) {
   return apiClient.get<{ total: number }>(`${API_ROUTES.categories.total}`, {

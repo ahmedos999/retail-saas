@@ -19,6 +19,8 @@ import {
 import { Route as AppRoute } from '#/routes/_app'
 import { useCreateCategory } from '#/feature/categories/categories.mutation'
 import { productsTotalMetricsQueryOptions } from '#/feature/products/products.queries'
+import type { Category } from '#/feature/categories/categories.types'
+import { updateCategory } from '#/feature/categories/categories.api'
 
 export const Route = createLazyFileRoute('/_app/categories/')({
   component: RouteComponent,
@@ -29,6 +31,7 @@ function RouteComponent() {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null)
   const { data: categories } = useQuery(
     categoriesQueryOptions({ storeId: user.storeId, search, page }),
   )
@@ -58,8 +61,14 @@ function RouteComponent() {
     debouncedSetSearch(e.target.value)
   }
 
+  const handleEditCategory = (category: Category) => {
+    setCategoryToEdit(category)
+    setIsOpen(true)
+  }
+
   const categoryCardItems: CategoryCardItem[] =
     categories?.map((category) => ({
+      onEdit: () => handleEditCategory(category),
       title: category.name,
       description: category.description ?? '',
       icon: getCategoryIcon(category.icon),
@@ -76,9 +85,17 @@ function RouteComponent() {
         <CategoryModel
           onClose={() => setIsOpen(false)}
           onSubmit={async (data) => {
-            await createCategory({ ...data, storeId: user?.storeId ?? '' })
+            if (categoryToEdit) {
+              await updateCategory(categoryToEdit.id, {
+                ...data,
+                storeId: user?.storeId ?? '',
+              })
+            } else {
+              await createCategory({ ...data, storeId: user?.storeId ?? '' })
+            }
             setIsOpen(false)
           }}
+          categoryToEdit={categoryToEdit}
         />
       )}
       <div className="p-6">
@@ -140,7 +157,6 @@ function RouteComponent() {
             placeholder="All Status"
           />
         </div>
-
         <div className="mt-4 ">
           <CategoryCardList categories={categoryCardItems} />
         </div>

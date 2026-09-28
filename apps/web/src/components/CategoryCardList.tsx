@@ -10,6 +10,7 @@ export interface CategoryCardItem {
   lowStock: number
   bgColor?: string
   icon?: LucideIcon
+  onEdit?: () => void
 }
 
 interface CategoryCardListProps {
@@ -35,6 +36,7 @@ export const CategoryCardList = ({ categories }: CategoryCardListProps) => {
                 <Icon size={32} style={{ color: category.bgColor }} />
               ) : undefined
             }
+            onClick={category.onEdit}
           />
         )
       })}
