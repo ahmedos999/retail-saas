@@ -10,6 +10,7 @@ interface CategoryCardProps {
   bgColor?: string;
   icon?: ReactNode;
   onClick?: () => void;
+  onView?: () => void;
 }
 
 export const CategoryCard = ({
@@ -21,6 +22,7 @@ export const CategoryCard = ({
   totalValue,
   lowStock,
   onClick,
+  onView,
 }: CategoryCardProps) => {
   return (
     <div className="flex flex-col gap-4 p-4  rounded-md box-shadow">
@@ -55,7 +57,7 @@ export const CategoryCard = ({
         <button onClick={onClick}>
           <Edit size={18} className="mr-1 inline" /> Edit
         </button>
-        <button>
+        <button onClick={onView}>
           <View size={18} className="mr-1 inline" /> view products
         </button>
         <button>

@@ -59,7 +59,7 @@ export const SalesChart = ({
             tick={{ fontSize: 12, fill: "#6b7280" }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={(v) => `$${v.toLocaleString()}`}
+            tickFormatter={(v) => `$${v.toLocaleString("en-US")}`}
             width={72}
           />
           <Tooltip
@@ -69,7 +69,7 @@ export const SalesChart = ({
               fontSize: "0.875rem",
             }}
             formatter={(value: number) => [
-              `$${value.toLocaleString()}`,
+              `$${value.toLocaleString("en-US")}`,
               "Sales",
             ]}
           />

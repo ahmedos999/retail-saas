@@ -11,6 +11,7 @@ export interface CategoryCardItem {
   bgColor?: string
   icon?: LucideIcon
   onEdit?: () => void
+  onView?: () => void
 }
 
 interface CategoryCardListProps {
@@ -37,6 +38,7 @@ export const CategoryCardList = ({ categories }: CategoryCardListProps) => {
               ) : undefined
             }
             onClick={category.onEdit}
+            onView={category.onView}
           />
         )
       })}

@@ -25,5 +25,7 @@ export { CategoryCard } from "./category/categoryCard";
 export type { NavLink } from "./sideBar";
 export type { TableColumn, PaginationProps } from "./table";
 export { ViewOrderModal } from "./model/ViewModel";
+export { ViewProductsModel } from "./model/viewProductsModel";
+export type { ProductData } from "./model/viewProductsModel";
 export { ErrorFallback } from "./error/ErrorFallback";
 export type { ErrorFallbackProps } from "./error/ErrorFallback";

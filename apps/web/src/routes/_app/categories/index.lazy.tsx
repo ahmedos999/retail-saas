@@ -1,5 +1,13 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { Button, CategoryModel, DropDown, Pagination, Search } from '@retail/ui'
+import {
+  Button,
+  CategoryModel,
+  DropDown,
+  Pagination,
+  Search,
+  ViewProductsModel,
+  type ProductData,
+} from '@retail/ui'
 import { getCategoryIcon } from '#/util/getCategoryIcon'
 import { debounce } from '#/util/debounce'
 import { Box, DollarSign, Plus, Tag } from 'lucide-react'
@@ -18,7 +26,10 @@ import {
 } from '#/feature/categories/categories.queries'
 import { Route as AppRoute } from '#/routes/_app'
 import { useCreateCategory } from '#/feature/categories/categories.mutation'
-import { productsTotalMetricsQueryOptions } from '#/feature/products/products.queries'
+import {
+  productsQueryOptions,
+  productsTotalMetricsQueryOptions,
+} from '#/feature/products/products.queries'
 import type { Category } from '#/feature/categories/categories.types'
 import { updateCategory } from '#/feature/categories/categories.api'
 
@@ -32,9 +43,19 @@ function RouteComponent() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null)
+  const [categoryToView, setCategoryToView] = useState<Category | null>(null)
   const { data: categories } = useQuery(
     categoriesQueryOptions({ storeId: user.storeId, search, page }),
   )
+
+  const { data: categoryProducts, isLoading: isCategoryProductsLoading } =
+    useQuery({
+      ...productsQueryOptions({
+        storeId: user.storeId,
+        categoryId: categoryToView?.id,
+      }),
+      enabled: Boolean(categoryToView),
+    })
 
   // metrics
 
@@ -66,17 +87,34 @@ function RouteComponent() {
     setIsOpen(true)
   }
 
+  const handleViewCategoryProducts = (category: Category) => {
+    setCategoryToView(category)
+  }
+
   const categoryCardItems: CategoryCardItem[] =
     categories?.map((category) => ({
       onEdit: () => handleEditCategory(category),
+      onView: () => handleViewCategoryProducts(category),
       title: category.name,
       description: category.description ?? '',
       icon: getCategoryIcon(category.icon),
       id: category.id,
       lowStock: category.outOfStockCount,
       numberOfProducts: category.productCount,
-      totalValue: `$${category.totalValue.toLocaleString()}`,
+      totalValue: `$${category.totalValue.toLocaleString('en-US')}`,
       bgColor: category.color,
+    })) ?? []
+
+  const viewProductItems: ProductData[] =
+    categoryProducts?.map((product) => ({
+      storeId: product.storeId,
+      name: product.name,
+      sku: product.sku,
+      price: product.price,
+      stock: product.stock,
+      costPrice: product.costPrice,
+      status: product.status,
+      categoryId: product.categoryId,
     })) ?? []
 
   return (
@@ -96,6 +134,14 @@ function RouteComponent() {
             setIsOpen(false)
           }}
           categoryToEdit={categoryToEdit}
+        />
+      )}
+      {categoryToView && (
+        <ViewProductsModel
+          onClose={() => setCategoryToView(null)}
+          title={`Products in ${categoryToView.name}`}
+          loading={isCategoryProductsLoading}
+          products={viewProductItems}
         />
       )}
       <div className="p-6">
