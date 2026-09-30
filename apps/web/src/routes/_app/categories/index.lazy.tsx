@@ -25,13 +25,17 @@ import {
   totalCategoriesQueryOptions,
 } from '#/feature/categories/categories.queries'
 import { Route as AppRoute } from '#/routes/_app'
-import { useCreateCategory } from '#/feature/categories/categories.mutation'
+import {
+  useCreateCategory,
+  useDeleteCategory,
+} from '#/feature/categories/categories.mutation'
 import {
   productsQueryOptions,
   productsTotalMetricsQueryOptions,
 } from '#/feature/products/products.queries'
 import type { Category } from '#/feature/categories/categories.types'
 import { updateCategory } from '#/feature/categories/categories.api'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const Route = createLazyFileRoute('/_app/categories/')({
   component: RouteComponent,
@@ -56,6 +60,7 @@ function RouteComponent() {
       }),
       enabled: Boolean(categoryToView),
     })
+  const { mutateAsync: deleteCategory } = useDeleteCategory()
 
   // metrics
 
@@ -95,6 +100,10 @@ function RouteComponent() {
     categories?.map((category) => ({
       onEdit: () => handleEditCategory(category),
       onView: () => handleViewCategoryProducts(category),
+      onDelete: () => {
+        deleteCategory(category.id)
+        toast.success('Category deleted successfully')
+      },
       title: category.name,
       description: category.description ?? '',
       icon: getCategoryIcon(category.icon),

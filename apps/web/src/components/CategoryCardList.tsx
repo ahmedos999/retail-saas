@@ -12,6 +12,7 @@ export interface CategoryCardItem {
   icon?: LucideIcon
   onEdit?: () => void
   onView?: () => void
+  onDelete?: () => void
 }
 
 interface CategoryCardListProps {
@@ -39,6 +40,7 @@ export const CategoryCardList = ({ categories }: CategoryCardListProps) => {
             }
             onClick={category.onEdit}
             onView={category.onView}
+            onDelete={category.onDelete}
           />
         )
       })}
