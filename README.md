@@ -1,6 +1,6 @@
 ### General
 
-- [ ] Add Error boundry
+- [x] Add Error boundry
 
 ### Authentication
 
@@ -10,17 +10,18 @@
 
 ### Products and Categories
 
-- [ ] Add product metrics (Total number / Total Value / OutofStock /lowStock )
-- [ ] Add categories Metrics same //
-- [ ] Add view products from categories card
+- [x] Add product metrics (Total number / Total Value / OutofStock /lowStock )
+- [x] Add categories Metrics same //
+- [x] Add view products from categories card
 - [ ] Edit Cateorty from category card
 - [ ] Display total products and categoris for pages
+- [ ] Add pagination to POS page
 
 ### POS and Orders
 
 - [ ] Add Customers from backend to POS page
 - [ ] Include payment method & notes from the POS on order creation
-- [ ] Add Order metrics
+- [x] Add Order metrics
 
 ### Testing
 
