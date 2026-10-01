@@ -18,6 +18,7 @@ export const Route = createFileRoute('/_app/pos/')({
 })
 
 function RouteComponent() {
+  const [page, setPage] = useState(1)
   const { user } = Route.useRouteContext()
   const [categoryId, setCategoryId] = useState('')
   const {
@@ -30,6 +31,7 @@ function RouteComponent() {
   const { data: networkProducts } = useQuery(
     productsQueryOptions({
       storeId: user.storeId,
+      page,
       categoryId: categoryId || undefined,
     }),
   )
@@ -109,8 +111,8 @@ function RouteComponent() {
               <Pagination
                 totalItems={100}
                 pageSize={5}
-                currentPage={1}
-                onPageChange={(page) => console.log('Page changed to:', page)}
+                currentPage={page}
+                onPageChange={(page) => setPage(page)}
               />
             </div>
           </div>
@@ -128,11 +130,12 @@ function RouteComponent() {
             <div className="mt-4">
               <Checkout
                 subtotal={subtotal}
-                discount={10}
+                discount={0}
                 taxRate={taxRate}
                 isPending={createOrder.isPending}
                 ClearCart={clearCart}
                 Checkout={handleCheckout}
+                disabled={cartItems.length === 0 || createOrder.isPending}
               />
             </div>
           </div>
