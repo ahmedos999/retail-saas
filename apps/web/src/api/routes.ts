@@ -1,6 +1,12 @@
 export const API_ROUTES = {
   LOGIN: '/api/auth/login',
   LOGOUT: '/api/auth/logout',
+  dashboard: {
+    totalRevenue: '/api/dashboard/total-revenue',
+    totalOrders: '/api/dashboard/total-orders',
+    avgOrderValue: '/api/dashboard/avg-order-value',
+    ordersFulfilled: '/api/dashboard/orders-fulfilled',
+  },
   products: {
     list: '/api/products',
     create: '/api/products',

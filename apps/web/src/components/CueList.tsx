@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 
 export interface CueItem {
   title: string
-  value: string
+  value: string | number
   percentage?: string
   icon?: ReactNode
   bgColor?: string
