@@ -81,7 +81,8 @@ function RouteComponent() {
       toast.success('Order created successfully')
       clearCart()
     } catch (error) {
-      toast.error('Failed to create order')
+      let errorMessage = (error as Error).message ?? 'Something went wrong'
+      toast.error(`Failed to create order: ${errorMessage}`)
     }
   }
 

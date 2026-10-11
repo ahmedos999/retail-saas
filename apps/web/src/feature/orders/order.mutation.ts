@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createOrder, updateOrder } from './order.api'
 import { orderKeys } from './order.queries'
+import { productsKeys } from '..//products/products.queries'
 import type { Order } from './order.types'
 
 export function useCreateOrderMutation() {
@@ -9,6 +10,7 @@ export function useCreateOrderMutation() {
     mutationFn: createOrder,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productsKeys.lists() })
     },
     onError: (error: any) => {
       console.error('Error creating order:', error)
