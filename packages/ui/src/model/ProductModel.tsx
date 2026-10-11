@@ -1,4 +1,4 @@
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 export interface CreateProductData {
   storeId: string;
@@ -14,6 +14,7 @@ export interface CreateProductData {
 
 interface ProductModalProps {
   onClose: () => void;
+  cleanup?: () => void;
   onSubmit: (data: CreateProductData) => Promise<void>;
   categories: { id: string; name: string }[];
   storeId: string;
@@ -22,6 +23,7 @@ interface ProductModalProps {
 
 export const ProductModel = ({
   onClose,
+  cleanup,
   onSubmit,
   categories,
   storeId,
@@ -48,6 +50,11 @@ export const ProductModel = ({
     },
     null,
   );
+  useEffect(() => {
+    return () => {
+      cleanup?.();
+    };
+  }, [cleanup]);
 
   return (
     <div

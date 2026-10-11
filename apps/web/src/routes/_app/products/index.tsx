@@ -97,6 +97,7 @@ function RouteComponent() {
       {isOpen && (
         <ProductModel
           onClose={() => setIsOpen(false)}
+          cleanup={() => setProductToEdit(null)}
           onSubmit={async (data) => {
             if (productToEdit) {
               await updateProduct({
