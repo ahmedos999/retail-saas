@@ -8,6 +8,7 @@ export interface CreateProductData {
   stock: number;
   costPrice: string;
   status: "Active" | "Inactive" | "OutOfStock";
+  isActive: boolean;
   categoryId: string;
 }
 
@@ -37,6 +38,7 @@ export const ProductModel = ({
           stock: Number(formData.get("stock")),
           costPrice: formData.get("costPrice") as string,
           status: formData.get("status") as CreateProductData["status"],
+          isActive: formData.get("status") === "Active",
           categoryId: formData.get("categoryId") as string,
         });
         return null;
