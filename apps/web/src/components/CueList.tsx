@@ -7,6 +7,7 @@ export interface CueItem {
   percentage?: string
   icon?: ReactNode
   bgColor?: string
+  toFixed?: number
 }
 
 interface CueListProps {
@@ -24,6 +25,7 @@ export const CueList = ({ items }: CueListProps) => {
           percentage={item.percentage}
           icon={item.icon}
           bgColor={item.bgColor}
+          toFixed={item.toFixed}
         />
       ))}
     </div>

@@ -1,9 +1,10 @@
 import { Table, TableRow, TableCell } from '../../../../packages/ui/src/table'
 
 export interface ListViewItem {
-  product: string
+  productId: string
+  name: string
   image: string
-  sold: number
+  quantitySold: number
   revenue: string
 }
 
@@ -29,19 +30,19 @@ const ListView = ({ title, items }: ListViewProps) => {
       </div>
       <Table columns={columns}>
         {items.map((item, index) => (
-          <TableRow key={item.product}>
+          <TableRow key={`${item.productId}-${index}`}>
             <TableCell>
               <div className="flex items-center gap-3">
                 <img
                   src={item.image}
-                  alt={item.product}
+                  alt={item.name}
                   className="w-9 h-9 rounded-md object-cover border border-gray-200"
                 />
-                <span>{item.product}</span>
+                <span>{item.name}</span>
               </div>
             </TableCell>
             <TableCell className={`${index === 0 ? 'font-bold' : ''}`}>
-              {item.sold}
+              {item.quantitySold}
             </TableCell>
             <TableCell className={`${index === 0 ? 'font-bold' : ''}`}>
               {item.revenue}

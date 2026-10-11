@@ -2,6 +2,7 @@ import { CueList } from '#/components/CueList'
 import {
   avgOrderValueQueryOptions,
   ordersFulfilledQueryOptions,
+  topSellingProductsQueryOptions,
   totalOrdersQueryOptions,
   totalRevenueQueryOptions,
 } from '#/feature/dashboard/dashboard.queries'
@@ -14,13 +15,13 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import StockList from '#/components/StockList'
-import {
-  dashboardListItems,
-  lowStockData,
-  salesChartData,
-} from '#/data/cueItems'
+import { lowStockData, salesChartData } from '#/data/cueItems'
 import { DropDown, ListView, SalesChart } from '@retail/ui'
 import { createFileRoute } from '@tanstack/react-router'
+
+// TODO: replace with the real product image once the endpoint returns it
+const PLACEHOLDER_IMAGE =
+  'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&q=80'
 
 export const Route = createFileRoute('/_app/dashboard/')({
   component: RouteComponent,
@@ -35,14 +36,20 @@ function RouteComponent() {
     { data: orders },
     { data: avgOrder },
     { data: fulfilled },
+    { data: topSelling },
   ] = useQueries({
     queries: [
       totalRevenueQueryOptions(filters),
       totalOrdersQueryOptions(filters),
       avgOrderValueQueryOptions(filters),
       ordersFulfilledQueryOptions(filters),
+      topSellingProductsQueryOptions(filters),
     ],
   })
+
+  const topSellingItems = (topSelling?.data?.topProducts ?? []).map(
+    (product) => ({ ...product, image: PLACEHOLDER_IMAGE }),
+  )
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
@@ -61,28 +68,36 @@ function RouteComponent() {
           items={[
             {
               title: 'Total Revenue',
-              value: Number(revenue?.data?.totalRevenue) ?? '-',
+              value: revenue?.data?.totalRevenue
+                ? Number(revenue?.data?.totalRevenue)
+                : '-',
+              toFixed: 2,
               percentage: '8.4%',
               icon: <TrendingUp size={24} className="text-emerald-800" />,
               bgColor: 'bg-emerald-200',
             },
             {
               title: 'Total Orders',
-              value: Number(orders?.data?.total) ?? '-',
+              value: orders?.data?.total ?? '-',
+              toFixed: 0,
               percentage: '5.7%',
               icon: <ShoppingCart size={24} className="text-blue-800" />,
               bgColor: 'bg-blue-200',
             },
             {
               title: 'Avg Order Value',
-              value: Number(avgOrder?.data.avgOrderValue) ?? '-',
+              value: avgOrder?.data.avgOrderValue
+                ? Number(avgOrder?.data.avgOrderValue)
+                : '-',
+              toFixed: 2,
               percentage: '3.2%',
               icon: <DollarSign size={24} className="text-violet-800" />,
               bgColor: 'bg-violet-200',
             },
             {
               title: 'Orders Fulfilled',
-              value: Number(fulfilled?.data.total) ?? '-',
+              value: fulfilled?.data?.total ?? '-',
+              toFixed: 0,
               percentage: '6.1%',
               icon: <PackageCheck size={24} className="text-orange-800" />,
               bgColor: 'bg-orange-200',
@@ -94,7 +109,7 @@ function RouteComponent() {
       <div className="mt-6 grid grid-cols-2 gap-4">
         <SalesChart data={salesChartData} title="Sales Over Time" />
 
-        <ListView title="Top Selling Products" items={dashboardListItems} />
+        <ListView title="Top Selling Products" items={topSellingItems} />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">

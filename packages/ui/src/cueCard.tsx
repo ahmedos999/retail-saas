@@ -6,6 +6,7 @@ type CueCardProps = {
   percentage?: string;
   icon?: React.ReactNode;
   bgColor?: string;
+  toFixed?: number;
 };
 
 export const CueCard = ({
@@ -14,6 +15,7 @@ export const CueCard = ({
   percentage,
   icon,
   bgColor,
+  toFixed = 2,
 }: CueCardProps) => {
   return (
     <div className="flex flex-1 justify-center  gap-6 rounded-lg bg-white p-6 box-shadow">
@@ -25,7 +27,10 @@ export const CueCard = ({
       <div>
         <h2 className=" text-gray-500 line-clamp-1">{title}</h2>
         {typeof value === "number" ? (
-          <p className=" font-bold text-2xl line-clamp-1">{value.toFixed(2)}</p>
+          <p className=" font-bold text-2xl line-clamp-1">
+            {" "}
+            {value.toFixed(toFixed)}
+          </p>
         ) : (
           <p className=" font-bold text-2xl line-clamp-1">{value}</p>
         )}

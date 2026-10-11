@@ -4,6 +4,7 @@ import {
   getTotalOrders,
   getAvgOrderValue,
   getOrdersFulfilled,
+  getTopSellingProducts,
 } from './dashboard.api'
 import type { dashboardFilter } from './dashboard.type'
 
@@ -12,6 +13,7 @@ export const dashboardQueryKeys = {
   totalOrders: ['totalOrders'] as const,
   avgOrderValue: ['avgOrderValue'] as const,
   ordersFulfilled: ['ordersFulfilled'] as const,
+  topSellingProducts: ['topSellingProducts'] as const,
 }
 
 export const totalRevenueQueryOptions = (filters?: dashboardFilter) =>
@@ -36,5 +38,11 @@ export const ordersFulfilledQueryOptions = (filters?: dashboardFilter) =>
   queryOptions({
     queryKey: [...dashboardQueryKeys.ordersFulfilled, filters ?? {}],
     queryFn: () => getOrdersFulfilled(filters),
+  })
+
+export const topSellingProductsQueryOptions = (filters?: dashboardFilter) =>
+  queryOptions({
+    queryKey: [...dashboardQueryKeys.topSellingProducts, filters ?? {}],
+    queryFn: () => getTopSellingProducts(filters),
   })
 

@@ -77,38 +77,43 @@ export const categoryCueItems: CueItem[] = [
 
 export const dashboardListItems: ListViewItem[] = [
   {
-    product: 'Air Max 90',
+    productId: '1',
+    name: 'Air Max 90',
     image:
       'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&q=80',
-    sold: 284,
+    quantitySold: 284,
     revenue: '$36,920',
   },
   {
-    product: 'Slim Fit T-Shirt',
+    productId: '2',
+    name: 'Slim Fit T-Shirt',
     image:
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&q=80',
-    sold: 193,
+    quantitySold: 193,
     revenue: '$9,650',
   },
   {
-    product: 'Wireless Headphones',
+    productId: '3',
+    name: 'Wireless Headphones',
     image:
       'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80',
-    sold: 147,
+    quantitySold: 147,
     revenue: '$29,400',
   },
   {
-    product: 'Running Shorts',
+    productId: '4',
+    name: 'Running Shorts',
     image:
       'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=80&q=80',
-    sold: 112,
+    quantitySold: 112,
     revenue: '$5,600',
   },
   {
-    product: 'Leather Wallet',
+    productId: '5',
+    name: 'Leather Wallet',
     image:
       'https://images.unsplash.com/photo-1627123424574-724758594e93?w=80&q=80',
-    sold: 98,
+    quantitySold: 98,
     revenue: '$7,840',
   },
 ]
