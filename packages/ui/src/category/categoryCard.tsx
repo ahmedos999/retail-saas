@@ -75,7 +75,7 @@ export const CategoryCard = ({
         <button onClick={onView}>
           <View size={18} className="mr-1 inline" /> view products
         </button>
-        <button
+        <div
           className="relative"
           onClick={() => setDeleteMenuOpen(!deleteMenuOpen)}
         >
@@ -94,7 +94,7 @@ export const CategoryCard = ({
               </div>
             </div>
           )}
-        </button>
+        </div>
       </div>
     </div>
   );
