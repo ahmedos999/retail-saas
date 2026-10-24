@@ -7,6 +7,8 @@ import type {
   avgOrderValue,
   ordersFulfilled,
   topSellingProducts,
+  lowStockProducts,
+  salesOverTime,
   dashboardFilter,
 } from './dashboard.type'
 
@@ -49,4 +51,21 @@ export async function getTopSellingProducts(
     API_ROUTES.dashboard.topSellingProducts,
     { params: filters },
   )
+}
+
+export async function getLowStockProducts(
+  filters?: dashboardFilter,
+): Promise<AxiosResponse<lowStockProducts>> {
+  return apiClient.get<lowStockProducts>(
+    API_ROUTES.dashboard.lowStockProducts,
+    { params: filters },
+  )
+}
+
+export async function getSalesOverTime(
+  filters?: dashboardFilter,
+): Promise<AxiosResponse<salesOverTime>> {
+  return apiClient.get<salesOverTime>(API_ROUTES.dashboard.salesOverTime, {
+    params: filters,
+  })
 }

@@ -1,11 +1,14 @@
 import { CueList } from '#/components/CueList'
 import {
   avgOrderValueQueryOptions,
+  lowStockProductsQueryOptions,
   ordersFulfilledQueryOptions,
+  salesOverTimeQueryOptions,
   topSellingProductsQueryOptions,
   totalOrdersQueryOptions,
   totalRevenueQueryOptions,
 } from '#/feature/dashboard/dashboard.queries'
+import { orderQueryOptions } from '#/feature/orders/order.queries'
 import { Route as AppRoute } from '#/routes/_app'
 import { useQueries } from '@tanstack/react-query'
 import {
@@ -14,8 +17,8 @@ import {
   ShoppingCart,
   TrendingUp,
 } from 'lucide-react'
+import RecentOrdersList from '#/components/RecentOrdersList'
 import StockList from '#/components/StockList'
-import { lowStockData, salesChartData } from '#/data/cueItems'
 import { DropDown, ListView, SalesChart } from '@retail/ui'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -37,6 +40,9 @@ function RouteComponent() {
     { data: avgOrder },
     { data: fulfilled },
     { data: topSelling },
+    { data: lowStock },
+    { data: recentOrders },
+    { data: salesOverTime },
   ] = useQueries({
     queries: [
       totalRevenueQueryOptions(filters),
@@ -44,11 +50,21 @@ function RouteComponent() {
       avgOrderValueQueryOptions(filters),
       ordersFulfilledQueryOptions(filters),
       topSellingProductsQueryOptions(filters),
+      lowStockProductsQueryOptions(filters),
+      orderQueryOptions({ storeId: user.storeId, limit: 5 }),
+      salesOverTimeQueryOptions(filters),
     ],
   })
 
   const topSellingItems = (topSelling?.data?.topProducts ?? []).map(
     (product) => ({ ...product, image: PLACEHOLDER_IMAGE }),
+  )
+  const lowStockItems = (lowStock?.data?.lowStockProducts ?? []).map(
+    (product) => ({
+      product: product.name,
+      image: PLACEHOLDER_IMAGE,
+      stock: product.stock,
+    }),
   )
   return (
     <div className="p-6">
@@ -107,15 +123,17 @@ function RouteComponent() {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <SalesChart data={salesChartData} title="Sales Over Time" />
+        <SalesChart
+          data={salesOverTime?.data?.salesOverTime ?? []}
+          title="Sales Over Time"
+        />
 
         <ListView title="Top Selling Products" items={topSellingItems} />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        {/* <OrderList title="Recent Orders" items={recentOrdersData} /> */}
-        <StockList title="Low Stock Products" items={lowStockData} />
-        <StockList title="Low Stock Products" items={lowStockData} />
+        <StockList title="Low Stock Products" items={lowStockItems} />
+        <RecentOrdersList title="Recent Orders" items={recentOrders ?? []} />
       </div>
     </div>
   )

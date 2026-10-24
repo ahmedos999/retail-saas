@@ -16,6 +16,7 @@
 - [ ] Edit Cateorty from category card
 - [ ] Display total products and categoris for pages
 - [ ] Add pagination to POS page
+- [ ] change names to update on product model when updating not adding
 
 ### POS and Orders
 

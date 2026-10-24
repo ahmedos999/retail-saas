@@ -7,6 +7,8 @@ export const API_ROUTES = {
     avgOrderValue: '/api/dashboard/avg-order-value',
     ordersFulfilled: '/api/dashboard/orders-fulfilled',
     topSellingProducts: '/api/dashboard/top-selling-products',
+    lowStockProducts: '/api/dashboard/low-stock-products',
+    salesOverTime: '/api/dashboard/sales-over-time',
   },
   products: {
     list: '/api/products',
