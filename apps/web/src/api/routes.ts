@@ -47,4 +47,8 @@ export const API_ROUTES = {
     largest: '/api/categories/metric/largestCategory',
     empty: '/api/categories/metric/emptyCategories',
   },
+  settings: {
+    get: '/api/settings',
+    update: '/api/settings',
+  },
 } as const

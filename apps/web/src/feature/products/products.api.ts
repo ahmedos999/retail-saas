@@ -2,10 +2,11 @@ import { apiClient } from '#/api/client'
 import { API_ROUTES } from '#/api/routes'
 import type { ProductFilters, Product } from './products.types'
 
-export function getProductsQueryFn(filters: ProductFilters = {}) {
-  return apiClient<Product[]>(`${API_ROUTES.products.list}`, {
+export async function getProductsQueryFn(filters: ProductFilters = {}) {
+  const response = await apiClient<Product[]>(`${API_ROUTES.products.list}`, {
     params: filters,
-  }).then((response) => response.data)
+  })
+  return response.data
 }
 
 export function createProduct(product: Product) {

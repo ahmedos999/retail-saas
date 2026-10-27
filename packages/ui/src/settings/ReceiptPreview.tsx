@@ -8,6 +8,10 @@ interface ReceiptPreviewProps {
   storeName?: string;
   storeAddress?: string;
   storeCity?: string;
+  taxRate?: number;
+  currency?: string;
+  paymentMethod?: string;
+  footerMessage?: string;
 }
 
 const defaultItems: ReceiptItem[] = [
@@ -16,19 +20,21 @@ const defaultItems: ReceiptItem[] = [
   { name: "Wireless Headphones", qty: 1, price: 149.0 },
 ];
 
-const TAX_RATE = 0.08;
-
 export const ReceiptPreview = ({
   storeName = "My Retail Store",
   storeAddress = "123 Main Street",
   storeCity = "New York, USA",
+  taxRate = 0,
+  currency = "USD",
+  paymentMethod = "Cash",
+  footerMessage = "Please come again",
 }: ReceiptPreviewProps) => {
   const subtotal = defaultItems.reduce((s, i) => s + i.price * i.qty, 0);
-  const tax = subtotal * TAX_RATE;
+  const tax = subtotal * (taxRate / 100);
   const total = subtotal + tax;
 
   const fmt = (n: number) =>
-    n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    n.toLocaleString("en-US", { style: "currency", currency });
 
   return (
     <div className="box-shadow p-4 w-full rounded-md">
@@ -80,10 +86,12 @@ export const ReceiptPreview = ({
             <span>Subtotal</span>
             <span>{fmt(subtotal)}</span>
           </div>
-          <div className="flex justify-between text-gray-500">
-            <span>Tax (8%)</span>
-            <span>{fmt(tax)}</span>
-          </div>
+          {taxRate > 0 && (
+            <div className="flex justify-between text-gray-500">
+              <span>Tax ({taxRate}%)</span>
+              <span>{fmt(tax)}</span>
+            </div>
+          )}
           <div className="flex justify-between font-bold mt-1 text-[12px]">
             <span>TOTAL</span>
             <span>{fmt(total)}</span>
@@ -94,9 +102,13 @@ export const ReceiptPreview = ({
 
         {/* Footer */}
         <div className="text-center text-gray-500">
-          <p className="uppercase tracking-widest text-[10px]">Cash</p>
+          <p className="uppercase tracking-widest text-[10px]">
+            {paymentMethod}
+          </p>
           <p className="mt-1 font-semibold">Thank you!</p>
-          <p className="text-[9px] text-gray-400 mt-0.5">Please come again</p>
+          {footerMessage && (
+            <p className="text-[9px] text-gray-400 mt-0.5">{footerMessage}</p>
+          )}
         </div>
       </div>
     </div>

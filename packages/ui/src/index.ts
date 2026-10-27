@@ -5,6 +5,7 @@ export { CueCard } from "./cueCard";
 export { Search } from "./form/search";
 export { DropDown } from "./form/dropdown";
 export { FormField } from "./form/formField";
+export { Toggle } from "./form/toggle";
 export { StoreInfoCard } from "./settings/StoreInfoCard";
 export { ReceiptPreview } from "./settings/ReceiptPreview";
 export { AuthLayout } from "./auth/AuthLayout";
