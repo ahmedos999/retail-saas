@@ -27,5 +27,6 @@ export type { TableColumn, PaginationProps } from "./table";
 export { ViewOrderModal } from "./model/ViewModel";
 export { ViewProductsModel } from "./model/viewProductsModel";
 export type { ProductData } from "./model/viewProductsModel";
+export { ChartSkeleton, ListSkeleton } from "./loading/skeleton";
 export { ErrorFallback } from "./error/ErrorFallback";
 export type { ErrorFallbackProps } from "./error/ErrorFallback";

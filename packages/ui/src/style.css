@@ -5,3 +5,29 @@
   --color-secondary: #e23c33;
   --color-secondary-light: #feebea;
 }
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 0%,
+    var(--color-secondary-light) 50%,
+    #f3f4f6 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+  }
+}

@@ -1,5 +1,4 @@
 import { CueList } from '#/components/CueList'
-import { ordersCueItems } from '#/data/cueItems'
 import { useUpdateOrderMutation } from '#/feature/orders/order.mutation'
 import {
   orderQueryOptions,
@@ -151,12 +150,14 @@ function RouteComponent() {
                 title: 'Total Orders',
                 value: totalOrder?.total ?? '-',
                 percentage: '5.7%',
+                toFixed: 0,
                 icon: <ShoppingCart size={24} className="text-blue-800" />,
                 bgColor: 'bg-blue-200',
               },
               {
                 title: 'Pending',
                 value: totalPending?.total ?? '-',
+                toFixed: 0,
                 percentage: '2.3%',
                 icon: <Clock size={24} className="text-yellow-800" />,
                 bgColor: 'bg-yellow-200',
@@ -164,6 +165,7 @@ function RouteComponent() {
               {
                 title: 'Completed',
                 value: totalCompleted?.total ?? '-',
+                toFixed: 0,
                 percentage: '6.1%',
                 icon: <CheckCircle size={24} className="text-green-800" />,
                 bgColor: 'bg-green-200',
@@ -171,6 +173,7 @@ function RouteComponent() {
               {
                 title: 'Cancelled',
                 value: totalCancelled?.total ?? '-',
+                toFixed: 0,
                 percentage: '1.4%',
                 icon: <XCircle size={24} className="text-red-800" />,
                 bgColor: 'bg-red-200',

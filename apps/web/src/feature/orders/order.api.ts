@@ -34,8 +34,11 @@ export async function getTotalOrders(
   storeId: string,
   status?: Order['status'],
 ) {
-  const response = await apiClient.get<any>(`${API_ROUTES.orders.total}`, {
-    params: { storeId, status },
-  })
+  const response = await apiClient.get<{ total: number }>(
+    `${API_ROUTES.orders.total}`,
+    {
+      params: { storeId, status },
+    },
+  )
   return response.data
 }

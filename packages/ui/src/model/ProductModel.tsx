@@ -1,4 +1,4 @@
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 
 export interface CreateProductData {
   storeId: string;
@@ -14,7 +14,6 @@ export interface CreateProductData {
 
 interface ProductModalProps {
   onClose: () => void;
-  cleanup?: () => void;
   onSubmit: (data: CreateProductData) => Promise<void>;
   categories: { id: string; name: string }[];
   storeId: string;
@@ -23,7 +22,6 @@ interface ProductModalProps {
 
 export const ProductModel = ({
   onClose,
-  cleanup,
   onSubmit,
   categories,
   storeId,
@@ -50,12 +48,6 @@ export const ProductModel = ({
     },
     null,
   );
-  useEffect(() => {
-    return () => {
-      cleanup?.();
-    };
-  }, [cleanup]);
-
   return (
     <div
       className="flex items-center justify-center h-full w-full bg-gray-800/80 absolute top-0 left-0 z-50"

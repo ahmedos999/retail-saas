@@ -19,7 +19,13 @@ import {
 } from 'lucide-react'
 import RecentOrdersList from '#/components/RecentOrdersList'
 import StockList from '#/components/StockList'
-import { DropDown, ListView, SalesChart } from '@retail/ui'
+import {
+  ChartSkeleton,
+  DropDown,
+  ListSkeleton,
+  ListView,
+  SalesChart,
+} from '@retail/ui'
 import { createFileRoute } from '@tanstack/react-router'
 
 // TODO: replace with the real product image once the endpoint returns it
@@ -39,10 +45,10 @@ function RouteComponent() {
     { data: orders },
     { data: avgOrder },
     { data: fulfilled },
-    { data: topSelling },
-    { data: lowStock },
-    { data: recentOrders },
-    { data: salesOverTime },
+    { data: topSelling, isPending: topSellingPending },
+    { data: lowStock, isPending: lowStockPending },
+    { data: recentOrders, isPending: recentOrdersPending },
+    { data: salesOverTime, isPending: salesOverTimePending },
   ] = useQueries({
     queries: [
       totalRevenueQueryOptions(filters),
@@ -123,17 +129,33 @@ function RouteComponent() {
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <SalesChart
-          data={salesOverTime?.data?.salesOverTime ?? []}
-          title="Sales Over Time"
-        />
+        {salesOverTimePending ? (
+          <ChartSkeleton title="Sales Over Time" />
+        ) : (
+          <SalesChart
+            data={salesOverTime?.data?.salesOverTime ?? []}
+            title="Sales Over Time"
+          />
+        )}
 
-        <ListView title="Top Selling Products" items={topSellingItems} />
+        {topSellingPending ? (
+          <ListSkeleton title="Top Selling Products" />
+        ) : (
+          <ListView title="Top Selling Products" items={topSellingItems} />
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <StockList title="Low Stock Products" items={lowStockItems} />
-        <RecentOrdersList title="Recent Orders" items={recentOrders ?? []} />
+        {lowStockPending ? (
+          <ListSkeleton title="Low Stock Products" />
+        ) : (
+          <StockList title="Low Stock Products" items={lowStockItems} />
+        )}
+        {recentOrdersPending ? (
+          <ListSkeleton title="Recent Orders" />
+        ) : (
+          <RecentOrdersList title="Recent Orders" items={recentOrders ?? []} />
+        )}
       </div>
     </div>
   )
